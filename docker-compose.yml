@@ -1,0 +1,6 @@
+services:
+  server:
+    image: dropnow-server
+    build: .
+    ports:
+      - 80:3000
