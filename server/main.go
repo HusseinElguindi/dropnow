@@ -12,6 +12,7 @@ import (
 // TODO: Try using Redis with TTL
 
 var rooms = make(map[string]*User)
+var limc = make(chan struct{}, 1)
 
 type User struct {
 	*websocket.Conn
@@ -28,30 +29,39 @@ func main() {
 			return fiber.ErrUpgradeRequired
 		}
 
-		// Get the room ID
-		id := c.Params("id")
+		/*
+		   // Get the room ID
+		   id := c.Params("id")
 
-		// Try to reserve a nil connection spot in the room
-		user, ok := connectToRoom(id, nil)
-		// Don't allow a connection if the room is full
-		if !ok {
-			return fiber.ErrForbidden
-		}
-		// Pass the reserved nil connection spot to be updated with the websocket connection
-		c.Locals("user", user)
+		   // Try to reserve a nil connection spot in the room
+		   user, ok := connectToRoom(id, nil)
+		   // Don't allow a connection if the room is full
+		   if !ok {
+		       return fiber.ErrForbidden
+		   }
+		   // Pass the reserved nil connection spot to be updated with the websocket connection
+		   c.Locals("user", user)
+		*/
 
 		return c.Next()
 	})
 
 	// Websocket connection handler
 	app.Get("/ws/:id", websocket.New(func(c *websocket.Conn) {
+		defer c.Close()
+
 		// Get the room ID
 		id := c.Params("id")
 
+		user, ok := connectToRoom(id, c)
+		if !ok {
+			return
+		}
+
 		// Get the reserved user spot
-		user := c.Locals("user").(*User)
+		// user := c.Locals("user").(*User)
 		// Update the nil connection with the current websocket connection
-		user.Conn = c
+		// user.Conn = c
 
 		// Disconnect from room when connection is closed
 		defer disconnectFromRoom(id, c)
@@ -69,7 +79,7 @@ func main() {
 			}
 			fmt.Println(string(msg))
 			// If no other user or a reserved user (nil connection) is connected, disregard the message
-			if user.pair == nil || user.pair.Conn == nil {
+			if user.pair == nil { //|| user.pair.Conn == nil {
 				continue
 			}
 			// Send the message to the other user
@@ -90,6 +100,11 @@ func main() {
 // created if does not already exist. Returns false if the room is full, otherwise, a reference to the created
 // user and true is returned.
 func connectToRoom(id string, c *websocket.Conn) (*User, bool) {
+	limc <- struct{}{}
+	defer func() {
+		<-limc
+	}()
+
 	user, ok := rooms[id]
 	var newUser *User
 	if !ok || user == nil {
@@ -99,19 +114,25 @@ func connectToRoom(id string, c *websocket.Conn) (*User, bool) {
 		newUser = &User{c, user}
 		user.pair = newUser
 	} else {
+		// Room is full
 		return nil, false
 	}
 	return newUser, true
 }
 
 func disconnectFromRoom(id string, c *websocket.Conn) {
+	limc <- struct{}{}
+	defer func() {
+		<-limc
+	}()
+
 	user, ok := rooms[id]
 	if !ok || user == nil {
 		return
 	}
 
 	if user.Conn == c {
-		user := user
+		// user := user
 		pair := user.pair
 
 		if pair != nil {
@@ -121,6 +142,9 @@ func disconnectFromRoom(id string, c *websocket.Conn) {
 		user.pair = nil
 		rooms[id] = pair
 	} else if user.pair != nil && user.pair.Conn == c {
+		user.pair.pair = nil
 		user.pair = nil
+	} else {
+		fmt.Println("what (disconnect)?")
 	}
 }

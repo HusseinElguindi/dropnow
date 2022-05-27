@@ -31,7 +31,8 @@
 
     let hostname: string;
     const SignalRTC = async () => {
-        const hostname = window.location.hostname;
+        /* const hostname = window.location.hostname; */
+        const hostname = window.location.host;
         /* hostname = '0.0.0.0:3000'; */
         let ws = new WebSocket(`ws://${hostname}/ws/${id}`);
         ws.onmessage = (ev) => onsignal(ev.data);
@@ -47,20 +48,48 @@
 
         const config: RTCConfiguration = {
             iceServers: [{
-                /* urls: ['stun:stun.l.google.com:19302', 'stun:stun.l.google.com:19302', 'stun:stun1.l.google.com:19302', 'stun:stun2.l.google.com:19302'] */
-                urls: ['stun:stun1.l.google.com:19302', 'stun:stun2.l.google.com:19302']
-            },
-        ]
+                    /* urls: ['stun:stun.l.google.com:19302', 'stun:stun.l.google.com:19302', 'stun:stun1.l.google.com:19302', 'stun:stun2.l.google.com:19302'] */
+                    urls: ['stun:stun1.l.google.com:19302', 'stun:stun2.l.google.com:19302']
+                },
+            ]
         };
         pc = new RTCPeerConnection(config);
-        datac = pc.createDataChannel('dataChan', { negotiated: true, id: 0 });
+        datac = pc.createDataChannel('dataChan', { negotiated: true, id: 0, ordered: true });
+        datac.binaryType = "arraybuffer";
+
+        let data: Blob[] = [];
+        let filename: string = "";
+        let size = 0;
         datac.onmessage = (ev) => {
             console.log('recieved:', ev.data);
-            while (received.length > 5) {
-                received.shift();
+            
+            if (typeof ev.data == "string") {
+                if (ev.data.startsWith("filename:")) {
+                    filename = ev.data.slice("filename:".length);
+                    data = [];
+                    size = 0;
+                }
+                else if (ev.data == "done") {
+                    const received = new Blob(data);
+                    console.log(size);
+                    console.log("blog len", received.size);
+                    downloadAnchor.href = URL.createObjectURL(received);
+                    downloadAnchor.download = filename;
+
+                    downloadAnchor.click();
+                }
             }
-            received = [...received, ev.data];
+            else {
+                size += ev.data.byteLength;
+                data.push(new Blob([ev.data]));
+            }
+
+            /* while (received.length > 5) { */
+                /* received.shift(); */
+            /* } */
+            /* received = [...received, ev.data]; */
         };
+
 
         // Safari only sends host ice candidates if there are media devices.
         // Otherwise, a TURN server will be used. Uncomment the next section for it to work with STUN.
@@ -175,13 +204,48 @@
 
     SignalRTC();
 
+    const chunkSize = 16 * 1024;
     let msgContent: string;
-    const sendMsg = () => {
+    const sendMsg = async () => {
         if (datac?.readyState == 'open') {
-            datac.send(msgContent);
+            var file: File = files[0];
+            datac.send(`filename:${file.name}`);
+
+            console.log(file.size);
+
+            let start: number = 0;
+            let end: number = 0;
+
+            while (end + chunkSize <= file.size) {
+                end += chunkSize;
+                await send(start, end, file);
+                start = end;
+            }
+            end = file.size;
+            await send(start, end, file);
+            datac.send("done");
+            
+            /* datac.send(msgContent); */
             msgContent = '';
         }
     };
+
+    const send = async (start: number, end: number, file: File) => {
+        if (datac.bufferedAmount > datac.bufferedAmountLowThreshold) {
+            await new Promise<void>((resolve, _) => {
+                datac.onbufferedamountlow = () => {
+                    datac.onbufferedamountlow = null;
+                    resolve();
+                }
+            });
+        }
+
+        let data = await file.slice(start, end).arrayBuffer()
+        datac.send(data);
+    }
+
+    let files: FileList;
+    let downloadAnchor: any;
 </script>
 
 <main>
@@ -194,6 +258,8 @@
     <p on:click={connect} style="cursor:pointer;">connect</p>
 
     <p>{hostname}</p>
+    <input type="file" bind:files>
+    <a bind:this={downloadAnchor} href="/#">download</a>
 
     <div>
         {#each received as msg}
