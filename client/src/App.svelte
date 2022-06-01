@@ -18,6 +18,10 @@
     page.start();
 </script>
 
+<svelte:head> 
+    <title>DropNow</title>
+</svelte:head>
+
 <svelte:component this={current} params={params} />
 
 <style>

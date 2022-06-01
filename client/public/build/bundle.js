@@ -1,2 +1,3202 @@
-var app=function(){"use strict";function t(){}function e(t){return t()}function n(){return Object.create(null)}function o(t){t.forEach(e)}function i(t){return"function"==typeof t}function r(t,e){return t!=t?e==e:t!==e||t&&"object"==typeof t||"function"==typeof t}function a(t,e){t.appendChild(e)}function s(t,e,n){t.insertBefore(e,n||null)}function c(t){t.parentNode.removeChild(t)}function l(t){return document.createElement(t)}function h(t){return document.createTextNode(t)}function p(){return h(" ")}function u(t,e,n,o){return t.addEventListener(e,n,o),()=>t.removeEventListener(e,n,o)}function f(t,e,n){null==n?t.removeAttribute(e):t.getAttribute(e)!==n&&t.setAttribute(e,n)}function d(t,e){e=""+e,t.wholeText!==e&&(t.data=e)}function g(t,e){t.value=null==e?"":e}function m(t,e,n){t.classList[n?"add":"remove"](e)}let w;function v(t){w=t}function y(t,e){const n=t.$$.callbacks[e.type];n&&n.slice().forEach((t=>t.call(this,e)))}const b=[],$=[],_=[],x=[],k=Promise.resolve();let E=!1;function C(t){_.push(t)}function R(t){x.push(t)}let L=!1;const U=new Set;function S(){if(!L){L=!0;do{for(let t=0;t<b.length;t+=1){const e=b[t];v(e),T(e.$$)}for(v(null),b.length=0;$.length;)$.pop()();for(let t=0;t<_.length;t+=1){const e=_[t];U.has(e)||(U.add(e),e())}_.length=0}while(b.length);for(;x.length;)x.pop()();E=!1,L=!1,U.clear()}}function T(t){if(null!==t.fragment){t.update(),o(t.before_update);const e=t.dirty;t.dirty=[-1],t.fragment&&t.fragment.p(t.ctx,e),t.after_update.forEach(C)}}const O=new Set;let A;function P(t,e){t&&t.i&&(O.delete(t),t.i(e))}function j(t,e,n,o){if(t&&t.o){if(O.has(t))return;O.add(t),A.c.push((()=>{O.delete(t),o&&(n&&t.d(1),o())})),t.o(e)}}function N(t,e,n){const o=t.$$.props[e];void 0!==o&&(t.$$.bound[o]=n,n(t.$$.ctx[o]))}function D(t){t&&t.c()}function I(t,n,r,a){const{fragment:s,on_mount:c,on_destroy:l,after_update:h}=t.$$;s&&s.m(n,r),a||C((()=>{const n=c.map(e).filter(i);l?l.push(...n):o(n),t.$$.on_mount=[]})),h.forEach(C)}function B(t,e){const n=t.$$;null!==n.fragment&&(o(n.on_destroy),n.fragment&&n.fragment.d(e),n.on_destroy=n.fragment=null,n.ctx=[])}function H(t,e){-1===t.$$.dirty[0]&&(b.push(t),E||(E=!0,k.then(S)),t.$$.dirty.fill(0)),t.$$.dirty[e/31|0]|=1<<e%31}function q(e,i,r,a,s,l,h,p=[-1]){const u=w;v(e);const f=e.$$={fragment:null,ctx:null,props:l,update:t,not_equal:s,bound:n(),on_mount:[],on_destroy:[],on_disconnect:[],before_update:[],after_update:[],context:new Map(i.context||(u?u.$$.context:[])),callbacks:n(),dirty:p,skip_bound:!1,root:i.target||u.$$.root};h&&h(f.root);let d=!1;if(f.ctx=r?r(e,i.props||{},((t,n,...o)=>{const i=o.length?o[0]:n;return f.ctx&&s(f.ctx[t],f.ctx[t]=i)&&(!f.skip_bound&&f.bound[t]&&f.bound[t](i),d&&H(e,t)),n})):[],f.update(),d=!0,o(f.before_update),f.fragment=!!a&&a(f.ctx),i.target){if(i.hydrate){const t=function(t){return Array.from(t.childNodes)}(i.target);f.fragment&&f.fragment.l(t),t.forEach(c)}else f.fragment&&f.fragment.c();i.intro&&P(e.$$.fragment),I(e,i.target,i.anchor,i.customElement),S()}v(u)}class z{$destroy(){B(this,1),this.$destroy=t}$on(t,e){const n=this.$$.callbacks[t]||(this.$$.callbacks[t]=[]);return n.push(e),()=>{const t=n.indexOf(e);-1!==t&&n.splice(t,1)}}$set(t){var e;this.$$set&&(e=t,0!==Object.keys(e).length)&&(this.$$.skip_bound=!0,this.$$set(t),this.$$.skip_bound=!1)}}"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof self&&self;var G,K,M=(G=function(t,e){t.exports=function(){var t=Array.isArray||function(t){return"[object Array]"==Object.prototype.toString.call(t)},e=v,n=s,o=c,i=l,r=w,a=new RegExp(["(\\\\.)","([\\/.])?(?:(?:\\:(\\w+)(?:\\(((?:\\\\.|[^()])+)\\))?|\\(((?:\\\\.|[^()])+)\\))([+*?])?|(\\*))"].join("|"),"g");function s(t){for(var e,n=[],o=0,i=0,r="";null!=(e=a.exec(t));){var s=e[0],c=e[1],l=e.index;if(r+=t.slice(i,l),i=l+s.length,c)r+=c[1];else{r&&(n.push(r),r="");var h=e[2],u=e[3],f=e[4],d=e[5],g=e[6],m=e[7],w="+"===g||"*"===g,v="?"===g||"*"===g,y=h||"/",b=f||d||(m?".*":"[^"+y+"]+?");n.push({name:u||o++,prefix:h||"",delimiter:y,optional:v,repeat:w,pattern:p(b)})}}return i<t.length&&(r+=t.substr(i)),r&&n.push(r),n}function c(t){return l(s(t))}function l(e){for(var n=new Array(e.length),o=0;o<e.length;o++)"object"==typeof e[o]&&(n[o]=new RegExp("^"+e[o].pattern+"$"));return function(o){for(var i="",r=o||{},a=0;a<e.length;a++){var s=e[a];if("string"!=typeof s){var c,l=r[s.name];if(null==l){if(s.optional)continue;throw new TypeError('Expected "'+s.name+'" to be defined')}if(t(l)){if(!s.repeat)throw new TypeError('Expected "'+s.name+'" to not repeat, but received "'+l+'"');if(0===l.length){if(s.optional)continue;throw new TypeError('Expected "'+s.name+'" to not be empty')}for(var h=0;h<l.length;h++){if(c=encodeURIComponent(l[h]),!n[a].test(c))throw new TypeError('Expected all "'+s.name+'" to match "'+s.pattern+'", but received "'+c+'"');i+=(0===h?s.prefix:s.delimiter)+c}}else{if(c=encodeURIComponent(l),!n[a].test(c))throw new TypeError('Expected "'+s.name+'" to match "'+s.pattern+'", but received "'+c+'"');i+=s.prefix+c}}else i+=s}return i}}function h(t){return t.replace(/([.+*?=^!:${}()[\]|\/])/g,"\\$1")}function p(t){return t.replace(/([=!:$\/()])/g,"\\$1")}function u(t,e){return t.keys=e,t}function f(t){return t.sensitive?"":"i"}function d(t,e){var n=t.source.match(/\((?!\?)/g);if(n)for(var o=0;o<n.length;o++)e.push({name:o,prefix:null,delimiter:null,optional:!1,repeat:!1,pattern:null});return u(t,e)}function g(t,e,n){for(var o=[],i=0;i<t.length;i++)o.push(v(t[i],e,n).source);return u(new RegExp("(?:"+o.join("|")+")",f(n)),e)}function m(t,e,n){for(var o=s(t),i=w(o,n),r=0;r<o.length;r++)"string"!=typeof o[r]&&e.push(o[r]);return u(i,e)}function w(t,e){for(var n=(e=e||{}).strict,o=!1!==e.end,i="",r=t[t.length-1],a="string"==typeof r&&/\/$/.test(r),s=0;s<t.length;s++){var c=t[s];if("string"==typeof c)i+=h(c);else{var l=h(c.prefix),p=c.pattern;c.repeat&&(p+="(?:"+l+p+")*"),i+=p=c.optional?l?"(?:"+l+"("+p+"))?":"("+p+")?":l+"("+p+")"}}return n||(i=(a?i.slice(0,-2):i)+"(?:\\/(?=$))?"),i+=o?"$":n&&a?"":"(?=\\/|$)",new RegExp("^"+i,f(e))}function v(e,n,o){return t(n=n||[])?o||(o={}):(o=n,n=[]),e instanceof RegExp?d(e,n):t(e)?g(e,n,o):m(e,n,o)}e.parse=n,e.compile=o,e.tokensToFunction=i,e.tokensToRegExp=r;var y,b="undefined"!=typeof document,$="undefined"!=typeof window,_="undefined"!=typeof history,x="undefined"!=typeof process,k=b&&document.ontouchstart?"touchstart":"click",E=$&&!(!window.history.location&&!window.location);function C(){this.callbacks=[],this.exits=[],this.current="",this.len=0,this._decodeURLComponents=!0,this._base="",this._strict=!1,this._running=!1,this._hashbang=!1,this.clickHandler=this.clickHandler.bind(this),this._onpopstate=this._onpopstate.bind(this)}function R(){var t=new C;function e(){return L.apply(t,arguments)}return e.callbacks=t.callbacks,e.exits=t.exits,e.base=t.base.bind(t),e.strict=t.strict.bind(t),e.start=t.start.bind(t),e.stop=t.stop.bind(t),e.show=t.show.bind(t),e.back=t.back.bind(t),e.redirect=t.redirect.bind(t),e.replace=t.replace.bind(t),e.dispatch=t.dispatch.bind(t),e.exit=t.exit.bind(t),e.configure=t.configure.bind(t),e.sameOrigin=t.sameOrigin.bind(t),e.clickHandler=t.clickHandler.bind(t),e.create=R,Object.defineProperty(e,"len",{get:function(){return t.len},set:function(e){t.len=e}}),Object.defineProperty(e,"current",{get:function(){return t.current},set:function(e){t.current=e}}),e.Context=T,e.Route=O,e}function L(t,e){if("function"==typeof t)return L.call(this,"*",t);if("function"==typeof e)for(var n=new O(t,null,this),o=1;o<arguments.length;++o)this.callbacks.push(n.middleware(arguments[o]));else"string"==typeof t?this["string"==typeof e?"redirect":"show"](t,e):this.start(t)}function U(t){if(!t.handled){var e=this,n=e._window;(e._hashbang?E&&this._getBase()+n.location.hash.replace("#!",""):E&&n.location.pathname+n.location.search)!==t.canonicalPath&&(e.stop(),t.handled=!1,E&&(n.location.href=t.canonicalPath))}}function S(t){return t.replace(/([.+*?=^!:${}()[\]|/\\])/g,"\\$1")}function T(t,e,n){var o=this.page=n||L,i=o._window,r=o._hashbang,a=o._getBase();"/"===t[0]&&0!==t.indexOf(a)&&(t=a+(r?"#!":"")+t);var s=t.indexOf("?");this.canonicalPath=t;var c=new RegExp("^"+S(a));if(this.path=t.replace(c,"")||"/",r&&(this.path=this.path.replace("#!","")||"/"),this.title=b&&i.document.title,this.state=e||{},this.state.path=t,this.querystring=~s?o._decodeURLEncodedURIComponent(t.slice(s+1)):"",this.pathname=o._decodeURLEncodedURIComponent(~s?t.slice(0,s):t),this.params={},this.hash="",!r){if(!~this.path.indexOf("#"))return;var l=this.path.split("#");this.path=this.pathname=l[0],this.hash=o._decodeURLEncodedURIComponent(l[1])||"",this.querystring=this.querystring.split("#")[0]}}function O(t,n,o){var i=this.page=o||A,r=n||{};r.strict=r.strict||i._strict,this.path="*"===t?"(.*)":t,this.method="GET",this.regexp=e(this.path,this.keys=[],r)}C.prototype.configure=function(t){var e=t||{};this._window=e.window||$&&window,this._decodeURLComponents=!1!==e.decodeURLComponents,this._popstate=!1!==e.popstate&&$,this._click=!1!==e.click&&b,this._hashbang=!!e.hashbang;var n=this._window;this._popstate?n.addEventListener("popstate",this._onpopstate,!1):$&&n.removeEventListener("popstate",this._onpopstate,!1),this._click?n.document.addEventListener(k,this.clickHandler,!1):b&&n.document.removeEventListener(k,this.clickHandler,!1),this._hashbang&&$&&!_?n.addEventListener("hashchange",this._onpopstate,!1):$&&n.removeEventListener("hashchange",this._onpopstate,!1)},C.prototype.base=function(t){if(0===arguments.length)return this._base;this._base=t},C.prototype._getBase=function(){var t=this._base;if(t)return t;var e=$&&this._window&&this._window.location;return $&&this._hashbang&&e&&"file:"===e.protocol&&(t=e.pathname),t},C.prototype.strict=function(t){if(0===arguments.length)return this._strict;this._strict=t},C.prototype.start=function(t){var e=t||{};if(this.configure(e),!1!==e.dispatch){var n;if(this._running=!0,E){var o=this._window.location;n=this._hashbang&&~o.hash.indexOf("#!")?o.hash.substr(2)+o.search:this._hashbang?o.search+o.hash:o.pathname+o.search+o.hash}this.replace(n,null,!0,e.dispatch)}},C.prototype.stop=function(){if(this._running){this.current="",this.len=0,this._running=!1;var t=this._window;this._click&&t.document.removeEventListener(k,this.clickHandler,!1),$&&t.removeEventListener("popstate",this._onpopstate,!1),$&&t.removeEventListener("hashchange",this._onpopstate,!1)}},C.prototype.show=function(t,e,n,o){var i=new T(t,e,this),r=this.prevContext;return this.prevContext=i,this.current=i.path,!1!==n&&this.dispatch(i,r),!1!==i.handled&&!1!==o&&i.pushState(),i},C.prototype.back=function(t,e){var n=this;if(this.len>0){var o=this._window;_&&o.history.back(),this.len--}else t?setTimeout((function(){n.show(t,e)})):setTimeout((function(){n.show(n._getBase(),e)}))},C.prototype.redirect=function(t,e){var n=this;"string"==typeof t&&"string"==typeof e&&L.call(this,t,(function(t){setTimeout((function(){n.replace(e)}),0)})),"string"==typeof t&&void 0===e&&setTimeout((function(){n.replace(t)}),0)},C.prototype.replace=function(t,e,n,o){var i=new T(t,e,this),r=this.prevContext;return this.prevContext=i,this.current=i.path,i.init=n,i.save(),!1!==o&&this.dispatch(i,r),i},C.prototype.dispatch=function(t,e){var n=0,o=0,i=this;function r(){var t=i.exits[o++];if(!t)return a();t(e,r)}function a(){var e=i.callbacks[n++];if(t.path===i.current)return e?void e(t,a):U.call(i,t);t.handled=!1}e?r():a()},C.prototype.exit=function(t,e){if("function"==typeof t)return this.exit("*",t);for(var n=new O(t,null,this),o=1;o<arguments.length;++o)this.exits.push(n.middleware(arguments[o]))},C.prototype.clickHandler=function(t){if(1===this._which(t)&&!(t.metaKey||t.ctrlKey||t.shiftKey||t.defaultPrevented)){var e=t.target,n=t.path||(t.composedPath?t.composedPath():null);if(n)for(var o=0;o<n.length;o++)if(n[o].nodeName&&"A"===n[o].nodeName.toUpperCase()&&n[o].href){e=n[o];break}for(;e&&"A"!==e.nodeName.toUpperCase();)e=e.parentNode;if(e&&"A"===e.nodeName.toUpperCase()){var i="object"==typeof e.href&&"SVGAnimatedString"===e.href.constructor.name;if(!e.hasAttribute("download")&&"external"!==e.getAttribute("rel")){var r=e.getAttribute("href");if((this._hashbang||!this._samePath(e)||!e.hash&&"#"!==r)&&!(r&&r.indexOf("mailto:")>-1)&&!(i?e.target.baseVal:e.target)&&(i||this.sameOrigin(e.href))){var a=i?e.href.baseVal:e.pathname+e.search+(e.hash||"");a="/"!==a[0]?"/"+a:a,x&&a.match(/^\/[a-zA-Z]:\//)&&(a=a.replace(/^\/[a-zA-Z]:\//,"/"));var s=a,c=this._getBase();0===a.indexOf(c)&&(a=a.substr(c.length)),this._hashbang&&(a=a.replace("#!","")),(!c||s!==a||E&&"file:"===this._window.location.protocol)&&(t.preventDefault(),this.show(s))}}}}},C.prototype._onpopstate=(y=!1,$?(b&&"complete"===document.readyState?y=!0:window.addEventListener("load",(function(){setTimeout((function(){y=!0}),0)})),function(t){if(y){var e=this;if(t.state){var n=t.state.path;e.replace(n,t.state)}else if(E){var o=e._window.location;e.show(o.pathname+o.search+o.hash,void 0,void 0,!1)}}}):function(){}),C.prototype._which=function(t){return null==(t=t||$&&this._window.event).which?t.button:t.which},C.prototype._toURL=function(t){var e=this._window;if("function"==typeof URL&&E)return new URL(t,e.location.toString());if(b){var n=e.document.createElement("a");return n.href=t,n}},C.prototype.sameOrigin=function(t){if(!t||!E)return!1;var e=this._toURL(t),n=this._window.location;return n.protocol===e.protocol&&n.hostname===e.hostname&&(n.port===e.port||""===n.port&&(80==e.port||443==e.port))},C.prototype._samePath=function(t){if(!E)return!1;var e=this._window.location;return t.pathname===e.pathname&&t.search===e.search},C.prototype._decodeURLEncodedURIComponent=function(t){return"string"!=typeof t?t:this._decodeURLComponents?decodeURIComponent(t.replace(/\+/g," ")):t},T.prototype.pushState=function(){var t=this.page,e=t._window,n=t._hashbang;t.len++,_&&e.history.pushState(this.state,this.title,n&&"/"!==this.path?"#!"+this.path:this.canonicalPath)},T.prototype.save=function(){var t=this.page;_&&t._window.history.replaceState(this.state,this.title,t._hashbang&&"/"!==this.path?"#!"+this.path:this.canonicalPath)},O.prototype.middleware=function(t){var e=this;return function(n,o){if(e.match(n.path,n.params))return n.routePath=e.path,t(n,o);o()}},O.prototype.match=function(t,e){var n=this.keys,o=t.indexOf("?"),i=~o?t.slice(0,o):t,r=this.regexp.exec(decodeURIComponent(i));if(!r)return!1;delete e[0];for(var a=1,s=r.length;a<s;++a){var c=n[a-1],l=this.page._decodeURLEncodedURIComponent(r[a]);void 0===l&&hasOwnProperty.call(e,c.name)||(e[c.name]=l)}return!0};var A=R(),P=A,j=A;return P.default=j,P}()},G(K={exports:{}},K.exports),K.exports);function V(e){let n,i,r,h,d,w,v;return{c(){n=l("main"),i=l("input"),r=p(),h=l("div"),d=l("div"),d.innerHTML='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right svelte-uoaktl"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>',f(i,"placeholder",e[1]),f(i,"spellcheck","false"),f(i,"class","svelte-uoaktl"),f(d,"class","input-btn svelte-uoaktl"),f(h,"class","btn-wrapper svelte-uoaktl"),f(n,"class","wrapper svelte-uoaktl"),m(n,"focused",e[2])},m(t,o){s(t,n,o),a(n,i),g(i,e[0]),a(n,r),a(n,h),a(h,d),w||(v=[u(i,"input",e[5]),u(i,"focus",e[6]),u(i,"blur",e[7]),u(d,"click",e[4])],w=!0)},p(t,[e]){2&e&&f(i,"placeholder",t[1]),1&e&&i.value!==t[0]&&g(i,t[0]),4&e&&m(n,"focused",t[2])},i:t,o:t,d(t){t&&c(n),w=!1,o(v)}}}function J(t,e,n){let{placeholder:o=""}=e,{value:i=""}=e,r=!1;const a=t=>{n(2,r=t)};return t.$$set=t=>{"placeholder"in t&&n(1,o=t.placeholder),"value"in t&&n(0,i=t.value)},[i,o,r,a,function(e){y.call(this,t,e)},function(){i=this.value,n(0,i)},()=>{a(!0)},()=>a(!1)]}class W extends z{constructor(t){super(),q(this,t,J,V,r,{placeholder:1,value:0})}}function Z(t){let e,n,o,i,r,h,u;function d(e){t[2](e)}let g={placeholder:"Room ID"};return void 0!==t[0]&&(g.value=t[0]),r=new W({props:g}),$.push((()=>N(r,"value",d))),r.$on("click",t[1]),{c(){e=p(),n=l("section"),o=l("h1"),o.textContent="DropNow",i=p(),D(r.$$.fragment),document.title="DropNow",f(o,"class","svelte-anrdqc"),f(n,"class","svelte-anrdqc")},m(t,c){s(t,e,c),s(t,n,c),a(n,o),a(n,i),I(r,n,null),u=!0},p(t,[e]){const n={};!h&&1&e&&(h=!0,n.value=t[0],R((()=>h=!1))),r.$set(n)},i(t){u||(P(r.$$.fragment,t),u=!0)},o(t){j(r.$$.fragment,t),u=!1},d(t){t&&c(e),t&&c(n),B(r)}}}function F(t,e,n){let o;return[o,()=>M.redirect(`/room/${o}`),function(t){o=t,n(0,o)}]}class Q extends z{constructor(t){super(),q(this,t,F,Z,r,{})}}function X(t,e,n){const o=t.slice();return o[20]=e[n],o}function Y(e){let n,o,i=e[20]+"";return{c(){n=l("p"),o=h(i)},m(t,e){s(t,n,e),a(n,o)},p:t,d(t){t&&c(n)}}}function tt(t){let e,n,r,g,m,w,v,y,b,_,x,k,E,C,L,U,S,T,O,A,H,q,z,G,K,M,V,J,Z,F;function Q(e){t[12](e)}let tt={placeholder:"Send message"};void 0!==t[4]&&(tt.value=t[4]),U=new W({props:tt}),$.push((()=>N(U,"value",Q))),U.$on("click",t[10]);let et=t[8],nt=[];for(let e=0;e<et.length;e+=1)nt[e]=Y(X(t,et,e));return{c(){e=l("main"),n=l("h1"),n.textContent=`Room ${t[7]}`,r=p(),g=l("p"),m=h("ws: "),w=h(t[0]),v=p(),y=l("p"),b=h("rtc: "),_=h(t[1]),x=p(),k=l("p"),E=h("ice: "),C=h(t[2]),L=p(),D(U.$$.fragment),T=p(),O=l("p"),O.textContent="connect",A=p(),H=l("p"),H.textContent=`${t[9]}`,q=p(),z=l("input"),G=p(),K=l("a"),K.textContent="download",M=p(),V=l("div");for(let t=0;t<nt.length;t+=1)nt[t].c();var o,i,a;o="cursor",i="pointer",O.style.setProperty(o,i,a?"important":""),f(z,"type","file"),f(K,"href","/#")},m(o,c){s(o,e,c),a(e,n),a(e,r),a(e,g),a(g,m),a(g,w),a(e,v),a(e,y),a(y,b),a(y,_),a(e,x),a(e,k),a(k,E),a(k,C),a(e,L),I(U,e,null),a(e,T),a(e,O),a(e,A),a(e,H),a(e,q),a(e,z),a(e,G),a(e,K),t[14](K),a(e,M),a(e,V);for(let t=0;t<nt.length;t+=1)nt[t].m(V,null);J=!0,Z||(F=[u(O,"click",(function(){i(t[3])&&t[3].apply(this,arguments)})),u(z,"change",t[13])],Z=!0)},p(e,[n]){t=e,(!J||1&n)&&d(w,t[0]),(!J||2&n)&&d(_,t[1]),(!J||4&n)&&d(C,t[2]);const o={};if(!S&&16&n&&(S=!0,o.value=t[4],R((()=>S=!1))),U.$set(o),256&n){let e;for(et=t[8],e=0;e<et.length;e+=1){const o=X(t,et,e);nt[e]?nt[e].p(o,n):(nt[e]=Y(o),nt[e].c(),nt[e].m(V,null))}for(;e<nt.length;e+=1)nt[e].d(1);nt.length=et.length}},i(t){J||(P(U.$$.fragment,t),J=!0)},o(t){j(U.$$.fragment,t),J=!1},d(n){n&&c(e),B(U),t[14](null),function(t,e){for(let n=0;n<t.length;n+=1)t[n]&&t[n].d(e)}(nt,n),Z=!1,o(F)}}}function et(t,e,n){let{params:o}=e;const{id:i}=o;let r,a,s,c,l,h=()=>{};(async()=>{const t=window.location.host;let e=new WebSocket(`ws://${t}/ws/${i}`);e.onmessage=t=>v(t.data),e.onclose=()=>n(0,r="closed"),e.onerror=t=>console.log(t),await new Promise(((t,o)=>e.onopen=()=>{n(0,r="connected"),t()})),console.log();a=new RTCPeerConnection({iceServers:[{urls:["stun:stun1.l.google.com:19302","stun:stun2.l.google.com:19302"]}]}),l=a.createDataChannel("dataChan",{negotiated:!0,id:0,ordered:!0}),l.binaryType="arraybuffer";let o=[],p="",u=0;l.onmessage=t=>{if(console.log("recieved:",t.data),"string"==typeof t.data){if(t.data.startsWith("filename:"))p=t.data.slice("filename:".length),o=[],u=0;else if("done"==t.data){const t=new Blob(o);console.log(u),console.log("blog len",t.size),n(6,d.href=URL.createObjectURL(t),d),n(6,d.download=p,d),d.click()}}else u+=t.data.byteLength,o.push(new Blob([t.data]))};const f=t=>null==e?void 0:e.send(JSON.stringify(t));a.onconnectionstatechange=()=>{n(1,s=a.connectionState),"connected"===a.connectionState&&console.log("connected!")},a.onicecandidate=t=>g(t),a.oniceconnectionstatechange=()=>m(),a.onsignalingstatechange=()=>w(),a.onicegatheringstatechange=()=>console.log(a.iceGatheringState),console.log(a);for(let t in a)/^on/.test(t)&&a.addEventListener(t.slice(2),(e=>console.log(t,e)));n(3,h=async()=>{console.log("negotiate");const t=await a.createOffer();await a.setLocalDescription(new RTCSessionDescription(t)),f({type:"sdp",data:t})});const g=t=>{t.candidate&&f({type:"ice-candidate",data:t.candidate})},m=()=>{switch(n(2,c=a.iceConnectionState),a.iceConnectionState){case"closed":case"failed":a.restartIce()}},w=()=>{a.signalingState},v=async t=>{console.log(t);const e=JSON.parse(t);switch(null==e?void 0:e.type){case"sdp":await y(e.data);break;case"ice-candidate":await a.addIceCandidate(e.data)}},y=async t=>{switch(t.type){case"offer":await a.setRemoteDescription(new RTCSessionDescription(t));const e=await a.createAnswer();await a.setLocalDescription(e),f({type:"sdp",data:e});break;case"answer":await a.setRemoteDescription(new RTCSessionDescription(t))}}})();let p;const u=async(t,e,n)=>{l.bufferedAmount>l.bufferedAmountLowThreshold&&await new Promise(((t,e)=>{l.onbufferedamountlow=()=>{l.onbufferedamountlow=null,t()}}));let o=await n.slice(t,e).arrayBuffer();l.send(o)};let f,d;return t.$$set=t=>{"params"in t&&n(11,o=t.params)},[r,s,c,h,p,f,d,i,[],undefined,async()=>{if("open"==(null==l?void 0:l.readyState)){var t=f[0];l.send(`filename:${t.name}`),console.log(t.size);let e=0,o=0;for(;o+16384<=t.size;)o+=16384,await u(e,o,t),e=o;o=t.size,await u(e,o,t),l.send("done"),n(4,p="")}},o,function(t){p=t,n(4,p)},function(){f=this.files,n(5,f)},function(t){$[t?"unshift":"push"]((()=>{d=t,n(6,d)}))}]}class nt extends z{constructor(t){super(),q(this,t,et,tt,r,{params:11})}}function ot(e){let n,o,i;return{c(){n=l("main"),n.innerHTML='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left svelte-o463b0"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg> \n    <h1 class="svelte-o463b0">404</h1>',f(n,"class","svelte-o463b0")},m(t,r){s(t,n,r),o||(i=u(n,"click",e[0]),o=!0)},p:t,i:t,o:t,d(t){t&&c(n),o=!1,i()}}}function it(t){return[()=>M.redirect("/")]}class rt extends z{constructor(t){super(),q(this,t,it,ot,r,{})}}function at(t){let e,n,i;var r=t[0];function a(t){return{props:{params:t[1]}}}return r&&(e=new r(a(t))),{c(){e&&D(e.$$.fragment),n=h("")},m(t,o){e&&I(e,t,o),s(t,n,o),i=!0},p(t,[i]){const s={};if(2&i&&(s.params=t[1]),r!==(r=t[0])){if(e){A={r:0,c:[],p:A};const t=e;j(t.$$.fragment,1,0,(()=>{B(t,1)})),A.r||o(A.c),A=A.p}r?(e=new r(a(t)),D(e.$$.fragment),P(e.$$.fragment,1),I(e,n.parentNode,n)):e=null}else r&&e.$set(s)},i(t){i||(e&&P(e.$$.fragment,t),i=!0)},o(t){e&&j(e.$$.fragment,t),i=!1},d(t){t&&c(n),e&&B(e,t)}}}function st(t,e,n){let o,i;return M("/",(()=>n(0,o=Q))),M("/room/:id",((t,e)=>{n(1,i=t.params),e()}),(()=>n(0,o=nt))),M("*",(()=>n(0,o=rt))),M.start(),[o,i]}return new class extends z{constructor(t){super(),q(this,t,st,at,r,{})}}({target:document.body})}();
+
+(function(l, r) { if (!l || l.getElementById('livereloadscript')) return; r = l.createElement('script'); r.async = 1; r.src = '//' + (self.location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1'; r.id = 'livereloadscript'; l.getElementsByTagName('head')[0].appendChild(r) })(self.document);
+var app = (function () {
+    'use strict';
+
+    function noop() { }
+    function assign(tar, src) {
+        // @ts-ignore
+        for (const k in src)
+            tar[k] = src[k];
+        return tar;
+    }
+    function add_location(element, file, line, column, char) {
+        element.__svelte_meta = {
+            loc: { file, line, column, char }
+        };
+    }
+    function run(fn) {
+        return fn();
+    }
+    function blank_object() {
+        return Object.create(null);
+    }
+    function run_all(fns) {
+        fns.forEach(run);
+    }
+    function is_function(thing) {
+        return typeof thing === 'function';
+    }
+    function safe_not_equal(a, b) {
+        return a != a ? b == b : a !== b || ((a && typeof a === 'object') || typeof a === 'function');
+    }
+    function is_empty(obj) {
+        return Object.keys(obj).length === 0;
+    }
+    function create_slot(definition, ctx, $$scope, fn) {
+        if (definition) {
+            const slot_ctx = get_slot_context(definition, ctx, $$scope, fn);
+            return definition[0](slot_ctx);
+        }
+    }
+    function get_slot_context(definition, ctx, $$scope, fn) {
+        return definition[1] && fn
+            ? assign($$scope.ctx.slice(), definition[1](fn(ctx)))
+            : $$scope.ctx;
+    }
+    function get_slot_changes(definition, $$scope, dirty, fn) {
+        if (definition[2] && fn) {
+            const lets = definition[2](fn(dirty));
+            if ($$scope.dirty === undefined) {
+                return lets;
+            }
+            if (typeof lets === 'object') {
+                const merged = [];
+                const len = Math.max($$scope.dirty.length, lets.length);
+                for (let i = 0; i < len; i += 1) {
+                    merged[i] = $$scope.dirty[i] | lets[i];
+                }
+                return merged;
+            }
+            return $$scope.dirty | lets;
+        }
+        return $$scope.dirty;
+    }
+    function update_slot_base(slot, slot_definition, ctx, $$scope, slot_changes, get_slot_context_fn) {
+        if (slot_changes) {
+            const slot_context = get_slot_context(slot_definition, ctx, $$scope, get_slot_context_fn);
+            slot.p(slot_context, slot_changes);
+        }
+    }
+    function get_all_dirty_from_scope($$scope) {
+        if ($$scope.ctx.length > 32) {
+            const dirty = [];
+            const length = $$scope.ctx.length / 32;
+            for (let i = 0; i < length; i++) {
+                dirty[i] = -1;
+            }
+            return dirty;
+        }
+        return -1;
+    }
+    function append(target, node) {
+        target.appendChild(node);
+    }
+    function insert(target, node, anchor) {
+        target.insertBefore(node, anchor || null);
+    }
+    function detach(node) {
+        node.parentNode.removeChild(node);
+    }
+    function element(name) {
+        return document.createElement(name);
+    }
+    function svg_element(name) {
+        return document.createElementNS('http://www.w3.org/2000/svg', name);
+    }
+    function text(data) {
+        return document.createTextNode(data);
+    }
+    function space() {
+        return text(' ');
+    }
+    function empty() {
+        return text('');
+    }
+    function listen(node, event, handler, options) {
+        node.addEventListener(event, handler, options);
+        return () => node.removeEventListener(event, handler, options);
+    }
+    function attr(node, attribute, value) {
+        if (value == null)
+            node.removeAttribute(attribute);
+        else if (node.getAttribute(attribute) !== value)
+            node.setAttribute(attribute, value);
+    }
+    function children(element) {
+        return Array.from(element.childNodes);
+    }
+    function set_input_value(input, value) {
+        input.value = value == null ? '' : value;
+    }
+    function set_style(node, key, value, important) {
+        node.style.setProperty(key, value, important ? 'important' : '');
+    }
+    function toggle_class(element, name, toggle) {
+        element.classList[toggle ? 'add' : 'remove'](name);
+    }
+    function custom_event(type, detail, bubbles = false) {
+        const e = document.createEvent('CustomEvent');
+        e.initCustomEvent(type, bubbles, false, detail);
+        return e;
+    }
+
+    let current_component;
+    function set_current_component(component) {
+        current_component = component;
+    }
+    // TODO figure out if we still want to support
+    // shorthand events, or if we want to implement
+    // a real bubbling mechanism
+    function bubble(component, event) {
+        const callbacks = component.$$.callbacks[event.type];
+        if (callbacks) {
+            // @ts-ignore
+            callbacks.slice().forEach(fn => fn.call(this, event));
+        }
+    }
+
+    const dirty_components = [];
+    const binding_callbacks = [];
+    const render_callbacks = [];
+    const flush_callbacks = [];
+    const resolved_promise = Promise.resolve();
+    let update_scheduled = false;
+    function schedule_update() {
+        if (!update_scheduled) {
+            update_scheduled = true;
+            resolved_promise.then(flush);
+        }
+    }
+    function add_render_callback(fn) {
+        render_callbacks.push(fn);
+    }
+    function add_flush_callback(fn) {
+        flush_callbacks.push(fn);
+    }
+    let flushing = false;
+    const seen_callbacks = new Set();
+    function flush() {
+        if (flushing)
+            return;
+        flushing = true;
+        do {
+            // first, call beforeUpdate functions
+            // and update components
+            for (let i = 0; i < dirty_components.length; i += 1) {
+                const component = dirty_components[i];
+                set_current_component(component);
+                update(component.$$);
+            }
+            set_current_component(null);
+            dirty_components.length = 0;
+            while (binding_callbacks.length)
+                binding_callbacks.pop()();
+            // then, once components are updated, call
+            // afterUpdate functions. This may cause
+            // subsequent updates...
+            for (let i = 0; i < render_callbacks.length; i += 1) {
+                const callback = render_callbacks[i];
+                if (!seen_callbacks.has(callback)) {
+                    // ...so guard against infinite loops
+                    seen_callbacks.add(callback);
+                    callback();
+                }
+            }
+            render_callbacks.length = 0;
+        } while (dirty_components.length);
+        while (flush_callbacks.length) {
+            flush_callbacks.pop()();
+        }
+        update_scheduled = false;
+        flushing = false;
+        seen_callbacks.clear();
+    }
+    function update($$) {
+        if ($$.fragment !== null) {
+            $$.update();
+            run_all($$.before_update);
+            const dirty = $$.dirty;
+            $$.dirty = [-1];
+            $$.fragment && $$.fragment.p($$.ctx, dirty);
+            $$.after_update.forEach(add_render_callback);
+        }
+    }
+    const outroing = new Set();
+    let outros;
+    function group_outros() {
+        outros = {
+            r: 0,
+            c: [],
+            p: outros // parent group
+        };
+    }
+    function check_outros() {
+        if (!outros.r) {
+            run_all(outros.c);
+        }
+        outros = outros.p;
+    }
+    function transition_in(block, local) {
+        if (block && block.i) {
+            outroing.delete(block);
+            block.i(local);
+        }
+    }
+    function transition_out(block, local, detach, callback) {
+        if (block && block.o) {
+            if (outroing.has(block))
+                return;
+            outroing.add(block);
+            outros.c.push(() => {
+                outroing.delete(block);
+                if (callback) {
+                    if (detach)
+                        block.d(1);
+                    callback();
+                }
+            });
+            block.o(local);
+        }
+    }
+
+    const globals = (typeof window !== 'undefined'
+        ? window
+        : typeof globalThis !== 'undefined'
+            ? globalThis
+            : global);
+
+    function bind(component, name, callback) {
+        const index = component.$$.props[name];
+        if (index !== undefined) {
+            component.$$.bound[index] = callback;
+            callback(component.$$.ctx[index]);
+        }
+    }
+    function create_component(block) {
+        block && block.c();
+    }
+    function mount_component(component, target, anchor, customElement) {
+        const { fragment, on_mount, on_destroy, after_update } = component.$$;
+        fragment && fragment.m(target, anchor);
+        if (!customElement) {
+            // onMount happens before the initial afterUpdate
+            add_render_callback(() => {
+                const new_on_destroy = on_mount.map(run).filter(is_function);
+                if (on_destroy) {
+                    on_destroy.push(...new_on_destroy);
+                }
+                else {
+                    // Edge case - component was destroyed immediately,
+                    // most likely as a result of a binding initialising
+                    run_all(new_on_destroy);
+                }
+                component.$$.on_mount = [];
+            });
+        }
+        after_update.forEach(add_render_callback);
+    }
+    function destroy_component(component, detaching) {
+        const $$ = component.$$;
+        if ($$.fragment !== null) {
+            run_all($$.on_destroy);
+            $$.fragment && $$.fragment.d(detaching);
+            // TODO null out other refs, including component.$$ (but need to
+            // preserve final state?)
+            $$.on_destroy = $$.fragment = null;
+            $$.ctx = [];
+        }
+    }
+    function make_dirty(component, i) {
+        if (component.$$.dirty[0] === -1) {
+            dirty_components.push(component);
+            schedule_update();
+            component.$$.dirty.fill(0);
+        }
+        component.$$.dirty[(i / 31) | 0] |= (1 << (i % 31));
+    }
+    function init(component, options, instance, create_fragment, not_equal, props, append_styles, dirty = [-1]) {
+        const parent_component = current_component;
+        set_current_component(component);
+        const $$ = component.$$ = {
+            fragment: null,
+            ctx: null,
+            // state
+            props,
+            update: noop,
+            not_equal,
+            bound: blank_object(),
+            // lifecycle
+            on_mount: [],
+            on_destroy: [],
+            on_disconnect: [],
+            before_update: [],
+            after_update: [],
+            context: new Map(options.context || (parent_component ? parent_component.$$.context : [])),
+            // everything else
+            callbacks: blank_object(),
+            dirty,
+            skip_bound: false,
+            root: options.target || parent_component.$$.root
+        };
+        append_styles && append_styles($$.root);
+        let ready = false;
+        $$.ctx = instance
+            ? instance(component, options.props || {}, (i, ret, ...rest) => {
+                const value = rest.length ? rest[0] : ret;
+                if ($$.ctx && not_equal($$.ctx[i], $$.ctx[i] = value)) {
+                    if (!$$.skip_bound && $$.bound[i])
+                        $$.bound[i](value);
+                    if (ready)
+                        make_dirty(component, i);
+                }
+                return ret;
+            })
+            : [];
+        $$.update();
+        ready = true;
+        run_all($$.before_update);
+        // `false` as a special case of no DOM component
+        $$.fragment = create_fragment ? create_fragment($$.ctx) : false;
+        if (options.target) {
+            if (options.hydrate) {
+                const nodes = children(options.target);
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                $$.fragment && $$.fragment.l(nodes);
+                nodes.forEach(detach);
+            }
+            else {
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                $$.fragment && $$.fragment.c();
+            }
+            if (options.intro)
+                transition_in(component.$$.fragment);
+            mount_component(component, options.target, options.anchor, options.customElement);
+            flush();
+        }
+        set_current_component(parent_component);
+    }
+    /**
+     * Base class for Svelte components. Used when dev=false.
+     */
+    class SvelteComponent {
+        $destroy() {
+            destroy_component(this, 1);
+            this.$destroy = noop;
+        }
+        $on(type, callback) {
+            const callbacks = (this.$$.callbacks[type] || (this.$$.callbacks[type] = []));
+            callbacks.push(callback);
+            return () => {
+                const index = callbacks.indexOf(callback);
+                if (index !== -1)
+                    callbacks.splice(index, 1);
+            };
+        }
+        $set($$props) {
+            if (this.$$set && !is_empty($$props)) {
+                this.$$.skip_bound = true;
+                this.$$set($$props);
+                this.$$.skip_bound = false;
+            }
+        }
+    }
+
+    function dispatch_dev(type, detail) {
+        document.dispatchEvent(custom_event(type, Object.assign({ version: '3.43.1' }, detail), true));
+    }
+    function append_dev(target, node) {
+        dispatch_dev('SvelteDOMInsert', { target, node });
+        append(target, node);
+    }
+    function insert_dev(target, node, anchor) {
+        dispatch_dev('SvelteDOMInsert', { target, node, anchor });
+        insert(target, node, anchor);
+    }
+    function detach_dev(node) {
+        dispatch_dev('SvelteDOMRemove', { node });
+        detach(node);
+    }
+    function listen_dev(node, event, handler, options, has_prevent_default, has_stop_propagation) {
+        const modifiers = options === true ? ['capture'] : options ? Array.from(Object.keys(options)) : [];
+        if (has_prevent_default)
+            modifiers.push('preventDefault');
+        if (has_stop_propagation)
+            modifiers.push('stopPropagation');
+        dispatch_dev('SvelteDOMAddEventListener', { node, event, handler, modifiers });
+        const dispose = listen(node, event, handler, options);
+        return () => {
+            dispatch_dev('SvelteDOMRemoveEventListener', { node, event, handler, modifiers });
+            dispose();
+        };
+    }
+    function attr_dev(node, attribute, value) {
+        attr(node, attribute, value);
+        if (value == null)
+            dispatch_dev('SvelteDOMRemoveAttribute', { node, attribute });
+        else
+            dispatch_dev('SvelteDOMSetAttribute', { node, attribute, value });
+    }
+    function prop_dev(node, property, value) {
+        node[property] = value;
+        dispatch_dev('SvelteDOMSetProperty', { node, property, value });
+    }
+    function set_data_dev(text, data) {
+        data = '' + data;
+        if (text.wholeText === data)
+            return;
+        dispatch_dev('SvelteDOMSetData', { node: text, data });
+        text.data = data;
+    }
+    function validate_slots(name, slot, keys) {
+        for (const slot_key of Object.keys(slot)) {
+            if (!~keys.indexOf(slot_key)) {
+                console.warn(`<${name}> received an unexpected slot "${slot_key}".`);
+            }
+        }
+    }
+    /**
+     * Base class for Svelte components with some minor dev-enhancements. Used when dev=true.
+     */
+    class SvelteComponentDev extends SvelteComponent {
+        constructor(options) {
+            if (!options || (!options.target && !options.$$inline)) {
+                throw new Error("'target' is a required option");
+            }
+            super();
+        }
+        $destroy() {
+            super.$destroy();
+            this.$destroy = () => {
+                console.warn('Component was already destroyed'); // eslint-disable-line no-console
+            };
+        }
+        $capture_state() { }
+        $inject_state() { }
+    }
+
+    var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
+
+    function createCommonjsModule(fn) {
+      var module = { exports: {} };
+    	return fn(module, module.exports), module.exports;
+    }
+
+    var page = createCommonjsModule(function (module, exports) {
+    (function (global, factory) {
+    	module.exports = factory() ;
+    }(commonjsGlobal, (function () {
+    var isarray = Array.isArray || function (arr) {
+      return Object.prototype.toString.call(arr) == '[object Array]';
+    };
+
+    /**
+     * Expose `pathToRegexp`.
+     */
+    var pathToRegexp_1 = pathToRegexp;
+    var parse_1 = parse;
+    var compile_1 = compile;
+    var tokensToFunction_1 = tokensToFunction;
+    var tokensToRegExp_1 = tokensToRegExp;
+
+    /**
+     * The main path matching regexp utility.
+     *
+     * @type {RegExp}
+     */
+    var PATH_REGEXP = new RegExp([
+      // Match escaped characters that would otherwise appear in future matches.
+      // This allows the user to escape special characters that won't transform.
+      '(\\\\.)',
+      // Match Express-style parameters and un-named parameters with a prefix
+      // and optional suffixes. Matches appear as:
+      //
+      // "/:test(\\d+)?" => ["/", "test", "\d+", undefined, "?", undefined]
+      // "/route(\\d+)"  => [undefined, undefined, undefined, "\d+", undefined, undefined]
+      // "/*"            => ["/", undefined, undefined, undefined, undefined, "*"]
+      '([\\/.])?(?:(?:\\:(\\w+)(?:\\(((?:\\\\.|[^()])+)\\))?|\\(((?:\\\\.|[^()])+)\\))([+*?])?|(\\*))'
+    ].join('|'), 'g');
+
+    /**
+     * Parse a string for the raw tokens.
+     *
+     * @param  {String} str
+     * @return {Array}
+     */
+    function parse (str) {
+      var tokens = [];
+      var key = 0;
+      var index = 0;
+      var path = '';
+      var res;
+
+      while ((res = PATH_REGEXP.exec(str)) != null) {
+        var m = res[0];
+        var escaped = res[1];
+        var offset = res.index;
+        path += str.slice(index, offset);
+        index = offset + m.length;
+
+        // Ignore already escaped sequences.
+        if (escaped) {
+          path += escaped[1];
+          continue
+        }
+
+        // Push the current path onto the tokens.
+        if (path) {
+          tokens.push(path);
+          path = '';
+        }
+
+        var prefix = res[2];
+        var name = res[3];
+        var capture = res[4];
+        var group = res[5];
+        var suffix = res[6];
+        var asterisk = res[7];
+
+        var repeat = suffix === '+' || suffix === '*';
+        var optional = suffix === '?' || suffix === '*';
+        var delimiter = prefix || '/';
+        var pattern = capture || group || (asterisk ? '.*' : '[^' + delimiter + ']+?');
+
+        tokens.push({
+          name: name || key++,
+          prefix: prefix || '',
+          delimiter: delimiter,
+          optional: optional,
+          repeat: repeat,
+          pattern: escapeGroup(pattern)
+        });
+      }
+
+      // Match any characters still remaining.
+      if (index < str.length) {
+        path += str.substr(index);
+      }
+
+      // If the path exists, push it onto the end.
+      if (path) {
+        tokens.push(path);
+      }
+
+      return tokens
+    }
+
+    /**
+     * Compile a string to a template function for the path.
+     *
+     * @param  {String}   str
+     * @return {Function}
+     */
+    function compile (str) {
+      return tokensToFunction(parse(str))
+    }
+
+    /**
+     * Expose a method for transforming tokens into the path function.
+     */
+    function tokensToFunction (tokens) {
+      // Compile all the tokens into regexps.
+      var matches = new Array(tokens.length);
+
+      // Compile all the patterns before compilation.
+      for (var i = 0; i < tokens.length; i++) {
+        if (typeof tokens[i] === 'object') {
+          matches[i] = new RegExp('^' + tokens[i].pattern + '$');
+        }
+      }
+
+      return function (obj) {
+        var path = '';
+        var data = obj || {};
+
+        for (var i = 0; i < tokens.length; i++) {
+          var token = tokens[i];
+
+          if (typeof token === 'string') {
+            path += token;
+
+            continue
+          }
+
+          var value = data[token.name];
+          var segment;
+
+          if (value == null) {
+            if (token.optional) {
+              continue
+            } else {
+              throw new TypeError('Expected "' + token.name + '" to be defined')
+            }
+          }
+
+          if (isarray(value)) {
+            if (!token.repeat) {
+              throw new TypeError('Expected "' + token.name + '" to not repeat, but received "' + value + '"')
+            }
+
+            if (value.length === 0) {
+              if (token.optional) {
+                continue
+              } else {
+                throw new TypeError('Expected "' + token.name + '" to not be empty')
+              }
+            }
+
+            for (var j = 0; j < value.length; j++) {
+              segment = encodeURIComponent(value[j]);
+
+              if (!matches[i].test(segment)) {
+                throw new TypeError('Expected all "' + token.name + '" to match "' + token.pattern + '", but received "' + segment + '"')
+              }
+
+              path += (j === 0 ? token.prefix : token.delimiter) + segment;
+            }
+
+            continue
+          }
+
+          segment = encodeURIComponent(value);
+
+          if (!matches[i].test(segment)) {
+            throw new TypeError('Expected "' + token.name + '" to match "' + token.pattern + '", but received "' + segment + '"')
+          }
+
+          path += token.prefix + segment;
+        }
+
+        return path
+      }
+    }
+
+    /**
+     * Escape a regular expression string.
+     *
+     * @param  {String} str
+     * @return {String}
+     */
+    function escapeString (str) {
+      return str.replace(/([.+*?=^!:${}()[\]|\/])/g, '\\$1')
+    }
+
+    /**
+     * Escape the capturing group by escaping special characters and meaning.
+     *
+     * @param  {String} group
+     * @return {String}
+     */
+    function escapeGroup (group) {
+      return group.replace(/([=!:$\/()])/g, '\\$1')
+    }
+
+    /**
+     * Attach the keys as a property of the regexp.
+     *
+     * @param  {RegExp} re
+     * @param  {Array}  keys
+     * @return {RegExp}
+     */
+    function attachKeys (re, keys) {
+      re.keys = keys;
+      return re
+    }
+
+    /**
+     * Get the flags for a regexp from the options.
+     *
+     * @param  {Object} options
+     * @return {String}
+     */
+    function flags (options) {
+      return options.sensitive ? '' : 'i'
+    }
+
+    /**
+     * Pull out keys from a regexp.
+     *
+     * @param  {RegExp} path
+     * @param  {Array}  keys
+     * @return {RegExp}
+     */
+    function regexpToRegexp (path, keys) {
+      // Use a negative lookahead to match only capturing groups.
+      var groups = path.source.match(/\((?!\?)/g);
+
+      if (groups) {
+        for (var i = 0; i < groups.length; i++) {
+          keys.push({
+            name: i,
+            prefix: null,
+            delimiter: null,
+            optional: false,
+            repeat: false,
+            pattern: null
+          });
+        }
+      }
+
+      return attachKeys(path, keys)
+    }
+
+    /**
+     * Transform an array into a regexp.
+     *
+     * @param  {Array}  path
+     * @param  {Array}  keys
+     * @param  {Object} options
+     * @return {RegExp}
+     */
+    function arrayToRegexp (path, keys, options) {
+      var parts = [];
+
+      for (var i = 0; i < path.length; i++) {
+        parts.push(pathToRegexp(path[i], keys, options).source);
+      }
+
+      var regexp = new RegExp('(?:' + parts.join('|') + ')', flags(options));
+
+      return attachKeys(regexp, keys)
+    }
+
+    /**
+     * Create a path regexp from string input.
+     *
+     * @param  {String} path
+     * @param  {Array}  keys
+     * @param  {Object} options
+     * @return {RegExp}
+     */
+    function stringToRegexp (path, keys, options) {
+      var tokens = parse(path);
+      var re = tokensToRegExp(tokens, options);
+
+      // Attach keys back to the regexp.
+      for (var i = 0; i < tokens.length; i++) {
+        if (typeof tokens[i] !== 'string') {
+          keys.push(tokens[i]);
+        }
+      }
+
+      return attachKeys(re, keys)
+    }
+
+    /**
+     * Expose a function for taking tokens and returning a RegExp.
+     *
+     * @param  {Array}  tokens
+     * @param  {Array}  keys
+     * @param  {Object} options
+     * @return {RegExp}
+     */
+    function tokensToRegExp (tokens, options) {
+      options = options || {};
+
+      var strict = options.strict;
+      var end = options.end !== false;
+      var route = '';
+      var lastToken = tokens[tokens.length - 1];
+      var endsWithSlash = typeof lastToken === 'string' && /\/$/.test(lastToken);
+
+      // Iterate over the tokens and create our regexp string.
+      for (var i = 0; i < tokens.length; i++) {
+        var token = tokens[i];
+
+        if (typeof token === 'string') {
+          route += escapeString(token);
+        } else {
+          var prefix = escapeString(token.prefix);
+          var capture = token.pattern;
+
+          if (token.repeat) {
+            capture += '(?:' + prefix + capture + ')*';
+          }
+
+          if (token.optional) {
+            if (prefix) {
+              capture = '(?:' + prefix + '(' + capture + '))?';
+            } else {
+              capture = '(' + capture + ')?';
+            }
+          } else {
+            capture = prefix + '(' + capture + ')';
+          }
+
+          route += capture;
+        }
+      }
+
+      // In non-strict mode we allow a slash at the end of match. If the path to
+      // match already ends with a slash, we remove it for consistency. The slash
+      // is valid at the end of a path match, not in the middle. This is important
+      // in non-ending mode, where "/test/" shouldn't match "/test//route".
+      if (!strict) {
+        route = (endsWithSlash ? route.slice(0, -2) : route) + '(?:\\/(?=$))?';
+      }
+
+      if (end) {
+        route += '$';
+      } else {
+        // In non-ending mode, we need the capturing groups to match as much as
+        // possible by using a positive lookahead to the end or next path segment.
+        route += strict && endsWithSlash ? '' : '(?=\\/|$)';
+      }
+
+      return new RegExp('^' + route, flags(options))
+    }
+
+    /**
+     * Normalize the given path string, returning a regular expression.
+     *
+     * An empty array can be passed in for the keys, which will hold the
+     * placeholder key descriptions. For example, using `/user/:id`, `keys` will
+     * contain `[{ name: 'id', delimiter: '/', optional: false, repeat: false }]`.
+     *
+     * @param  {(String|RegExp|Array)} path
+     * @param  {Array}                 [keys]
+     * @param  {Object}                [options]
+     * @return {RegExp}
+     */
+    function pathToRegexp (path, keys, options) {
+      keys = keys || [];
+
+      if (!isarray(keys)) {
+        options = keys;
+        keys = [];
+      } else if (!options) {
+        options = {};
+      }
+
+      if (path instanceof RegExp) {
+        return regexpToRegexp(path, keys)
+      }
+
+      if (isarray(path)) {
+        return arrayToRegexp(path, keys, options)
+      }
+
+      return stringToRegexp(path, keys, options)
+    }
+
+    pathToRegexp_1.parse = parse_1;
+    pathToRegexp_1.compile = compile_1;
+    pathToRegexp_1.tokensToFunction = tokensToFunction_1;
+    pathToRegexp_1.tokensToRegExp = tokensToRegExp_1;
+
+    /**
+       * Module dependencies.
+       */
+
+      
+
+      /**
+       * Short-cuts for global-object checks
+       */
+
+      var hasDocument = ('undefined' !== typeof document);
+      var hasWindow = ('undefined' !== typeof window);
+      var hasHistory = ('undefined' !== typeof history);
+      var hasProcess = typeof process !== 'undefined';
+
+      /**
+       * Detect click event
+       */
+      var clickEvent = hasDocument && document.ontouchstart ? 'touchstart' : 'click';
+
+      /**
+       * To work properly with the URL
+       * history.location generated polyfill in https://github.com/devote/HTML5-History-API
+       */
+
+      var isLocation = hasWindow && !!(window.history.location || window.location);
+
+      /**
+       * The page instance
+       * @api private
+       */
+      function Page() {
+        // public things
+        this.callbacks = [];
+        this.exits = [];
+        this.current = '';
+        this.len = 0;
+
+        // private things
+        this._decodeURLComponents = true;
+        this._base = '';
+        this._strict = false;
+        this._running = false;
+        this._hashbang = false;
+
+        // bound functions
+        this.clickHandler = this.clickHandler.bind(this);
+        this._onpopstate = this._onpopstate.bind(this);
+      }
+
+      /**
+       * Configure the instance of page. This can be called multiple times.
+       *
+       * @param {Object} options
+       * @api public
+       */
+
+      Page.prototype.configure = function(options) {
+        var opts = options || {};
+
+        this._window = opts.window || (hasWindow && window);
+        this._decodeURLComponents = opts.decodeURLComponents !== false;
+        this._popstate = opts.popstate !== false && hasWindow;
+        this._click = opts.click !== false && hasDocument;
+        this._hashbang = !!opts.hashbang;
+
+        var _window = this._window;
+        if(this._popstate) {
+          _window.addEventListener('popstate', this._onpopstate, false);
+        } else if(hasWindow) {
+          _window.removeEventListener('popstate', this._onpopstate, false);
+        }
+
+        if (this._click) {
+          _window.document.addEventListener(clickEvent, this.clickHandler, false);
+        } else if(hasDocument) {
+          _window.document.removeEventListener(clickEvent, this.clickHandler, false);
+        }
+
+        if(this._hashbang && hasWindow && !hasHistory) {
+          _window.addEventListener('hashchange', this._onpopstate, false);
+        } else if(hasWindow) {
+          _window.removeEventListener('hashchange', this._onpopstate, false);
+        }
+      };
+
+      /**
+       * Get or set basepath to `path`.
+       *
+       * @param {string} path
+       * @api public
+       */
+
+      Page.prototype.base = function(path) {
+        if (0 === arguments.length) return this._base;
+        this._base = path;
+      };
+
+      /**
+       * Gets the `base`, which depends on whether we are using History or
+       * hashbang routing.
+
+       * @api private
+       */
+      Page.prototype._getBase = function() {
+        var base = this._base;
+        if(!!base) return base;
+        var loc = hasWindow && this._window && this._window.location;
+
+        if(hasWindow && this._hashbang && loc && loc.protocol === 'file:') {
+          base = loc.pathname;
+        }
+
+        return base;
+      };
+
+      /**
+       * Get or set strict path matching to `enable`
+       *
+       * @param {boolean} enable
+       * @api public
+       */
+
+      Page.prototype.strict = function(enable) {
+        if (0 === arguments.length) return this._strict;
+        this._strict = enable;
+      };
+
+
+      /**
+       * Bind with the given `options`.
+       *
+       * Options:
+       *
+       *    - `click` bind to click events [true]
+       *    - `popstate` bind to popstate [true]
+       *    - `dispatch` perform initial dispatch [true]
+       *
+       * @param {Object} options
+       * @api public
+       */
+
+      Page.prototype.start = function(options) {
+        var opts = options || {};
+        this.configure(opts);
+
+        if (false === opts.dispatch) return;
+        this._running = true;
+
+        var url;
+        if(isLocation) {
+          var window = this._window;
+          var loc = window.location;
+
+          if(this._hashbang && ~loc.hash.indexOf('#!')) {
+            url = loc.hash.substr(2) + loc.search;
+          } else if (this._hashbang) {
+            url = loc.search + loc.hash;
+          } else {
+            url = loc.pathname + loc.search + loc.hash;
+          }
+        }
+
+        this.replace(url, null, true, opts.dispatch);
+      };
+
+      /**
+       * Unbind click and popstate event handlers.
+       *
+       * @api public
+       */
+
+      Page.prototype.stop = function() {
+        if (!this._running) return;
+        this.current = '';
+        this.len = 0;
+        this._running = false;
+
+        var window = this._window;
+        this._click && window.document.removeEventListener(clickEvent, this.clickHandler, false);
+        hasWindow && window.removeEventListener('popstate', this._onpopstate, false);
+        hasWindow && window.removeEventListener('hashchange', this._onpopstate, false);
+      };
+
+      /**
+       * Show `path` with optional `state` object.
+       *
+       * @param {string} path
+       * @param {Object=} state
+       * @param {boolean=} dispatch
+       * @param {boolean=} push
+       * @return {!Context}
+       * @api public
+       */
+
+      Page.prototype.show = function(path, state, dispatch, push) {
+        var ctx = new Context(path, state, this),
+          prev = this.prevContext;
+        this.prevContext = ctx;
+        this.current = ctx.path;
+        if (false !== dispatch) this.dispatch(ctx, prev);
+        if (false !== ctx.handled && false !== push) ctx.pushState();
+        return ctx;
+      };
+
+      /**
+       * Goes back in the history
+       * Back should always let the current route push state and then go back.
+       *
+       * @param {string} path - fallback path to go back if no more history exists, if undefined defaults to page.base
+       * @param {Object=} state
+       * @api public
+       */
+
+      Page.prototype.back = function(path, state) {
+        var page = this;
+        if (this.len > 0) {
+          var window = this._window;
+          // this may need more testing to see if all browsers
+          // wait for the next tick to go back in history
+          hasHistory && window.history.back();
+          this.len--;
+        } else if (path) {
+          setTimeout(function() {
+            page.show(path, state);
+          });
+        } else {
+          setTimeout(function() {
+            page.show(page._getBase(), state);
+          });
+        }
+      };
+
+      /**
+       * Register route to redirect from one path to other
+       * or just redirect to another route
+       *
+       * @param {string} from - if param 'to' is undefined redirects to 'from'
+       * @param {string=} to
+       * @api public
+       */
+      Page.prototype.redirect = function(from, to) {
+        var inst = this;
+
+        // Define route from a path to another
+        if ('string' === typeof from && 'string' === typeof to) {
+          page.call(this, from, function(e) {
+            setTimeout(function() {
+              inst.replace(/** @type {!string} */ (to));
+            }, 0);
+          });
+        }
+
+        // Wait for the push state and replace it with another
+        if ('string' === typeof from && 'undefined' === typeof to) {
+          setTimeout(function() {
+            inst.replace(from);
+          }, 0);
+        }
+      };
+
+      /**
+       * Replace `path` with optional `state` object.
+       *
+       * @param {string} path
+       * @param {Object=} state
+       * @param {boolean=} init
+       * @param {boolean=} dispatch
+       * @return {!Context}
+       * @api public
+       */
+
+
+      Page.prototype.replace = function(path, state, init, dispatch) {
+        var ctx = new Context(path, state, this),
+          prev = this.prevContext;
+        this.prevContext = ctx;
+        this.current = ctx.path;
+        ctx.init = init;
+        ctx.save(); // save before dispatching, which may redirect
+        if (false !== dispatch) this.dispatch(ctx, prev);
+        return ctx;
+      };
+
+      /**
+       * Dispatch the given `ctx`.
+       *
+       * @param {Context} ctx
+       * @api private
+       */
+
+      Page.prototype.dispatch = function(ctx, prev) {
+        var i = 0, j = 0, page = this;
+
+        function nextExit() {
+          var fn = page.exits[j++];
+          if (!fn) return nextEnter();
+          fn(prev, nextExit);
+        }
+
+        function nextEnter() {
+          var fn = page.callbacks[i++];
+
+          if (ctx.path !== page.current) {
+            ctx.handled = false;
+            return;
+          }
+          if (!fn) return unhandled.call(page, ctx);
+          fn(ctx, nextEnter);
+        }
+
+        if (prev) {
+          nextExit();
+        } else {
+          nextEnter();
+        }
+      };
+
+      /**
+       * Register an exit route on `path` with
+       * callback `fn()`, which will be called
+       * on the previous context when a new
+       * page is visited.
+       */
+      Page.prototype.exit = function(path, fn) {
+        if (typeof path === 'function') {
+          return this.exit('*', path);
+        }
+
+        var route = new Route(path, null, this);
+        for (var i = 1; i < arguments.length; ++i) {
+          this.exits.push(route.middleware(arguments[i]));
+        }
+      };
+
+      /**
+       * Handle "click" events.
+       */
+
+      /* jshint +W054 */
+      Page.prototype.clickHandler = function(e) {
+        if (1 !== this._which(e)) return;
+
+        if (e.metaKey || e.ctrlKey || e.shiftKey) return;
+        if (e.defaultPrevented) return;
+
+        // ensure link
+        // use shadow dom when available if not, fall back to composedPath()
+        // for browsers that only have shady
+        var el = e.target;
+        var eventPath = e.path || (e.composedPath ? e.composedPath() : null);
+
+        if(eventPath) {
+          for (var i = 0; i < eventPath.length; i++) {
+            if (!eventPath[i].nodeName) continue;
+            if (eventPath[i].nodeName.toUpperCase() !== 'A') continue;
+            if (!eventPath[i].href) continue;
+
+            el = eventPath[i];
+            break;
+          }
+        }
+
+        // continue ensure link
+        // el.nodeName for svg links are 'a' instead of 'A'
+        while (el && 'A' !== el.nodeName.toUpperCase()) el = el.parentNode;
+        if (!el || 'A' !== el.nodeName.toUpperCase()) return;
+
+        // check if link is inside an svg
+        // in this case, both href and target are always inside an object
+        var svg = (typeof el.href === 'object') && el.href.constructor.name === 'SVGAnimatedString';
+
+        // Ignore if tag has
+        // 1. "download" attribute
+        // 2. rel="external" attribute
+        if (el.hasAttribute('download') || el.getAttribute('rel') === 'external') return;
+
+        // ensure non-hash for the same path
+        var link = el.getAttribute('href');
+        if(!this._hashbang && this._samePath(el) && (el.hash || '#' === link)) return;
+
+        // Check for mailto: in the href
+        if (link && link.indexOf('mailto:') > -1) return;
+
+        // check target
+        // svg target is an object and its desired value is in .baseVal property
+        if (svg ? el.target.baseVal : el.target) return;
+
+        // x-origin
+        // note: svg links that are not relative don't call click events (and skip page.js)
+        // consequently, all svg links tested inside page.js are relative and in the same origin
+        if (!svg && !this.sameOrigin(el.href)) return;
+
+        // rebuild path
+        // There aren't .pathname and .search properties in svg links, so we use href
+        // Also, svg href is an object and its desired value is in .baseVal property
+        var path = svg ? el.href.baseVal : (el.pathname + el.search + (el.hash || ''));
+
+        path = path[0] !== '/' ? '/' + path : path;
+
+        // strip leading "/[drive letter]:" on NW.js on Windows
+        if (hasProcess && path.match(/^\/[a-zA-Z]:\//)) {
+          path = path.replace(/^\/[a-zA-Z]:\//, '/');
+        }
+
+        // same page
+        var orig = path;
+        var pageBase = this._getBase();
+
+        if (path.indexOf(pageBase) === 0) {
+          path = path.substr(pageBase.length);
+        }
+
+        if (this._hashbang) path = path.replace('#!', '');
+
+        if (pageBase && orig === path && (!isLocation || this._window.location.protocol !== 'file:')) {
+          return;
+        }
+
+        e.preventDefault();
+        this.show(orig);
+      };
+
+      /**
+       * Handle "populate" events.
+       * @api private
+       */
+
+      Page.prototype._onpopstate = (function () {
+        var loaded = false;
+        if ( ! hasWindow ) {
+          return function () {};
+        }
+        if (hasDocument && document.readyState === 'complete') {
+          loaded = true;
+        } else {
+          window.addEventListener('load', function() {
+            setTimeout(function() {
+              loaded = true;
+            }, 0);
+          });
+        }
+        return function onpopstate(e) {
+          if (!loaded) return;
+          var page = this;
+          if (e.state) {
+            var path = e.state.path;
+            page.replace(path, e.state);
+          } else if (isLocation) {
+            var loc = page._window.location;
+            page.show(loc.pathname + loc.search + loc.hash, undefined, undefined, false);
+          }
+        };
+      })();
+
+      /**
+       * Event button.
+       */
+      Page.prototype._which = function(e) {
+        e = e || (hasWindow && this._window.event);
+        return null == e.which ? e.button : e.which;
+      };
+
+      /**
+       * Convert to a URL object
+       * @api private
+       */
+      Page.prototype._toURL = function(href) {
+        var window = this._window;
+        if(typeof URL === 'function' && isLocation) {
+          return new URL(href, window.location.toString());
+        } else if (hasDocument) {
+          var anc = window.document.createElement('a');
+          anc.href = href;
+          return anc;
+        }
+      };
+
+      /**
+       * Check if `href` is the same origin.
+       * @param {string} href
+       * @api public
+       */
+      Page.prototype.sameOrigin = function(href) {
+        if(!href || !isLocation) return false;
+
+        var url = this._toURL(href);
+        var window = this._window;
+
+        var loc = window.location;
+
+        /*
+           When the port is the default http port 80 for http, or 443 for
+           https, internet explorer 11 returns an empty string for loc.port,
+           so we need to compare loc.port with an empty string if url.port
+           is the default port 80 or 443.
+           Also the comparition with `port` is changed from `===` to `==` because
+           `port` can be a string sometimes. This only applies to ie11.
+        */
+        return loc.protocol === url.protocol &&
+          loc.hostname === url.hostname &&
+          (loc.port === url.port || loc.port === '' && (url.port == 80 || url.port == 443)); // jshint ignore:line
+      };
+
+      /**
+       * @api private
+       */
+      Page.prototype._samePath = function(url) {
+        if(!isLocation) return false;
+        var window = this._window;
+        var loc = window.location;
+        return url.pathname === loc.pathname &&
+          url.search === loc.search;
+      };
+
+      /**
+       * Remove URL encoding from the given `str`.
+       * Accommodates whitespace in both x-www-form-urlencoded
+       * and regular percent-encoded form.
+       *
+       * @param {string} val - URL component to decode
+       * @api private
+       */
+      Page.prototype._decodeURLEncodedURIComponent = function(val) {
+        if (typeof val !== 'string') { return val; }
+        return this._decodeURLComponents ? decodeURIComponent(val.replace(/\+/g, ' ')) : val;
+      };
+
+      /**
+       * Create a new `page` instance and function
+       */
+      function createPage() {
+        var pageInstance = new Page();
+
+        function pageFn(/* args */) {
+          return page.apply(pageInstance, arguments);
+        }
+
+        // Copy all of the things over. In 2.0 maybe we use setPrototypeOf
+        pageFn.callbacks = pageInstance.callbacks;
+        pageFn.exits = pageInstance.exits;
+        pageFn.base = pageInstance.base.bind(pageInstance);
+        pageFn.strict = pageInstance.strict.bind(pageInstance);
+        pageFn.start = pageInstance.start.bind(pageInstance);
+        pageFn.stop = pageInstance.stop.bind(pageInstance);
+        pageFn.show = pageInstance.show.bind(pageInstance);
+        pageFn.back = pageInstance.back.bind(pageInstance);
+        pageFn.redirect = pageInstance.redirect.bind(pageInstance);
+        pageFn.replace = pageInstance.replace.bind(pageInstance);
+        pageFn.dispatch = pageInstance.dispatch.bind(pageInstance);
+        pageFn.exit = pageInstance.exit.bind(pageInstance);
+        pageFn.configure = pageInstance.configure.bind(pageInstance);
+        pageFn.sameOrigin = pageInstance.sameOrigin.bind(pageInstance);
+        pageFn.clickHandler = pageInstance.clickHandler.bind(pageInstance);
+
+        pageFn.create = createPage;
+
+        Object.defineProperty(pageFn, 'len', {
+          get: function(){
+            return pageInstance.len;
+          },
+          set: function(val) {
+            pageInstance.len = val;
+          }
+        });
+
+        Object.defineProperty(pageFn, 'current', {
+          get: function(){
+            return pageInstance.current;
+          },
+          set: function(val) {
+            pageInstance.current = val;
+          }
+        });
+
+        // In 2.0 these can be named exports
+        pageFn.Context = Context;
+        pageFn.Route = Route;
+
+        return pageFn;
+      }
+
+      /**
+       * Register `path` with callback `fn()`,
+       * or route `path`, or redirection,
+       * or `page.start()`.
+       *
+       *   page(fn);
+       *   page('*', fn);
+       *   page('/user/:id', load, user);
+       *   page('/user/' + user.id, { some: 'thing' });
+       *   page('/user/' + user.id);
+       *   page('/from', '/to')
+       *   page();
+       *
+       * @param {string|!Function|!Object} path
+       * @param {Function=} fn
+       * @api public
+       */
+
+      function page(path, fn) {
+        // <callback>
+        if ('function' === typeof path) {
+          return page.call(this, '*', path);
+        }
+
+        // route <path> to <callback ...>
+        if ('function' === typeof fn) {
+          var route = new Route(/** @type {string} */ (path), null, this);
+          for (var i = 1; i < arguments.length; ++i) {
+            this.callbacks.push(route.middleware(arguments[i]));
+          }
+          // show <path> with [state]
+        } else if ('string' === typeof path) {
+          this['string' === typeof fn ? 'redirect' : 'show'](path, fn);
+          // start [options]
+        } else {
+          this.start(path);
+        }
+      }
+
+      /**
+       * Unhandled `ctx`. When it's not the initial
+       * popstate then redirect. If you wish to handle
+       * 404s on your own use `page('*', callback)`.
+       *
+       * @param {Context} ctx
+       * @api private
+       */
+      function unhandled(ctx) {
+        if (ctx.handled) return;
+        var current;
+        var page = this;
+        var window = page._window;
+
+        if (page._hashbang) {
+          current = isLocation && this._getBase() + window.location.hash.replace('#!', '');
+        } else {
+          current = isLocation && window.location.pathname + window.location.search;
+        }
+
+        if (current === ctx.canonicalPath) return;
+        page.stop();
+        ctx.handled = false;
+        isLocation && (window.location.href = ctx.canonicalPath);
+      }
+
+      /**
+       * Escapes RegExp characters in the given string.
+       *
+       * @param {string} s
+       * @api private
+       */
+      function escapeRegExp(s) {
+        return s.replace(/([.+*?=^!:${}()[\]|/\\])/g, '\\$1');
+      }
+
+      /**
+       * Initialize a new "request" `Context`
+       * with the given `path` and optional initial `state`.
+       *
+       * @constructor
+       * @param {string} path
+       * @param {Object=} state
+       * @api public
+       */
+
+      function Context(path, state, pageInstance) {
+        var _page = this.page = pageInstance || page;
+        var window = _page._window;
+        var hashbang = _page._hashbang;
+
+        var pageBase = _page._getBase();
+        if ('/' === path[0] && 0 !== path.indexOf(pageBase)) path = pageBase + (hashbang ? '#!' : '') + path;
+        var i = path.indexOf('?');
+
+        this.canonicalPath = path;
+        var re = new RegExp('^' + escapeRegExp(pageBase));
+        this.path = path.replace(re, '') || '/';
+        if (hashbang) this.path = this.path.replace('#!', '') || '/';
+
+        this.title = (hasDocument && window.document.title);
+        this.state = state || {};
+        this.state.path = path;
+        this.querystring = ~i ? _page._decodeURLEncodedURIComponent(path.slice(i + 1)) : '';
+        this.pathname = _page._decodeURLEncodedURIComponent(~i ? path.slice(0, i) : path);
+        this.params = {};
+
+        // fragment
+        this.hash = '';
+        if (!hashbang) {
+          if (!~this.path.indexOf('#')) return;
+          var parts = this.path.split('#');
+          this.path = this.pathname = parts[0];
+          this.hash = _page._decodeURLEncodedURIComponent(parts[1]) || '';
+          this.querystring = this.querystring.split('#')[0];
+        }
+      }
+
+      /**
+       * Push state.
+       *
+       * @api private
+       */
+
+      Context.prototype.pushState = function() {
+        var page = this.page;
+        var window = page._window;
+        var hashbang = page._hashbang;
+
+        page.len++;
+        if (hasHistory) {
+            window.history.pushState(this.state, this.title,
+              hashbang && this.path !== '/' ? '#!' + this.path : this.canonicalPath);
+        }
+      };
+
+      /**
+       * Save the context state.
+       *
+       * @api public
+       */
+
+      Context.prototype.save = function() {
+        var page = this.page;
+        if (hasHistory) {
+            page._window.history.replaceState(this.state, this.title,
+              page._hashbang && this.path !== '/' ? '#!' + this.path : this.canonicalPath);
+        }
+      };
+
+      /**
+       * Initialize `Route` with the given HTTP `path`,
+       * and an array of `callbacks` and `options`.
+       *
+       * Options:
+       *
+       *   - `sensitive`    enable case-sensitive routes
+       *   - `strict`       enable strict matching for trailing slashes
+       *
+       * @constructor
+       * @param {string} path
+       * @param {Object=} options
+       * @api private
+       */
+
+      function Route(path, options, page) {
+        var _page = this.page = page || globalPage;
+        var opts = options || {};
+        opts.strict = opts.strict || _page._strict;
+        this.path = (path === '*') ? '(.*)' : path;
+        this.method = 'GET';
+        this.regexp = pathToRegexp_1(this.path, this.keys = [], opts);
+      }
+
+      /**
+       * Return route middleware with
+       * the given callback `fn()`.
+       *
+       * @param {Function} fn
+       * @return {Function}
+       * @api public
+       */
+
+      Route.prototype.middleware = function(fn) {
+        var self = this;
+        return function(ctx, next) {
+          if (self.match(ctx.path, ctx.params)) {
+            ctx.routePath = self.path;
+            return fn(ctx, next);
+          }
+          next();
+        };
+      };
+
+      /**
+       * Check if this route matches `path`, if so
+       * populate `params`.
+       *
+       * @param {string} path
+       * @param {Object} params
+       * @return {boolean}
+       * @api private
+       */
+
+      Route.prototype.match = function(path, params) {
+        var keys = this.keys,
+          qsIndex = path.indexOf('?'),
+          pathname = ~qsIndex ? path.slice(0, qsIndex) : path,
+          m = this.regexp.exec(decodeURIComponent(pathname));
+
+        if (!m) return false;
+
+        delete params[0];
+
+        for (var i = 1, len = m.length; i < len; ++i) {
+          var key = keys[i - 1];
+          var val = this.page._decodeURLEncodedURIComponent(m[i]);
+          if (val !== undefined || !(hasOwnProperty.call(params, key.name))) {
+            params[key.name] = val;
+          }
+        }
+
+        return true;
+      };
+
+
+      /**
+       * Module exports.
+       */
+
+      var globalPage = createPage();
+      var page_js = globalPage;
+      var default_1 = globalPage;
+
+    page_js.default = default_1;
+
+    return page_js;
+
+    })));
+    });
+
+    /* src/components/ButtonInput/ButtonInput.svelte generated by Svelte v3.43.1 */
+
+    const file$4 = "src/components/ButtonInput/ButtonInput.svelte";
+
+    function create_fragment$5(ctx) {
+    	let main;
+    	let input;
+    	let t;
+    	let div1;
+    	let div0;
+    	let svg;
+    	let line;
+    	let polyline;
+    	let main_style_value;
+    	let mounted;
+    	let dispose;
+
+    	const block = {
+    		c: function create() {
+    			main = element("main");
+    			input = element("input");
+    			t = space();
+    			div1 = element("div");
+    			div0 = element("div");
+    			svg = svg_element("svg");
+    			line = svg_element("line");
+    			polyline = svg_element("polyline");
+    			attr_dev(input, "placeholder", /*placeholder*/ ctx[2]);
+    			attr_dev(input, "spellcheck", "false");
+    			attr_dev(input, "class", "svelte-uoaktl");
+    			add_location(input, file$4, 8, 4, 260);
+    			attr_dev(line, "x1", "5");
+    			attr_dev(line, "y1", "12");
+    			attr_dev(line, "x2", "19");
+    			attr_dev(line, "y2", "12");
+    			add_location(line, file$4, 11, 208, 674);
+    			attr_dev(polyline, "points", "12 5 19 12 12 19");
+    			add_location(polyline, file$4, 11, 246, 712);
+    			attr_dev(svg, "xmlns", "http://www.w3.org/2000/svg");
+    			attr_dev(svg, "viewBox", "0 0 24 24");
+    			attr_dev(svg, "fill", "none");
+    			attr_dev(svg, "stroke", "currentColor");
+    			attr_dev(svg, "stroke-width", "1.5");
+    			attr_dev(svg, "stroke-linecap", "round");
+    			attr_dev(svg, "stroke-linejoin", "round");
+    			attr_dev(svg, "class", "feather feather-arrow-right svelte-uoaktl");
+    			add_location(svg, file$4, 11, 12, 478);
+    			attr_dev(div0, "class", "input-btn svelte-uoaktl");
+    			add_location(div0, file$4, 10, 8, 433);
+    			attr_dev(div1, "class", "btn-wrapper svelte-uoaktl");
+    			add_location(div1, file$4, 9, 4, 399);
+    			attr_dev(main, "class", "wrapper svelte-uoaktl");
+    			attr_dev(main, "style", main_style_value = /*hidden*/ ctx[1] ? 'display:none;' : '');
+    			toggle_class(main, "focused", /*focused*/ ctx[3]);
+    			add_location(main, file$4, 7, 0, 179);
+    		},
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, main, anchor);
+    			append_dev(main, input);
+    			set_input_value(input, /*value*/ ctx[0]);
+    			append_dev(main, t);
+    			append_dev(main, div1);
+    			append_dev(div1, div0);
+    			append_dev(div0, svg);
+    			append_dev(svg, line);
+    			append_dev(svg, polyline);
+
+    			if (!mounted) {
+    				dispose = [
+    					listen_dev(input, "input", /*input_input_handler*/ ctx[6]),
+    					listen_dev(input, "focus", /*focus_handler*/ ctx[7], false, false, false),
+    					listen_dev(input, "blur", /*blur_handler*/ ctx[8], false, false, false),
+    					listen_dev(div0, "click", /*click_handler*/ ctx[5], false, false, false)
+    				];
+
+    				mounted = true;
+    			}
+    		},
+    		p: function update(ctx, [dirty]) {
+    			if (dirty & /*placeholder*/ 4) {
+    				attr_dev(input, "placeholder", /*placeholder*/ ctx[2]);
+    			}
+
+    			if (dirty & /*value*/ 1 && input.value !== /*value*/ ctx[0]) {
+    				set_input_value(input, /*value*/ ctx[0]);
+    			}
+
+    			if (dirty & /*hidden*/ 2 && main_style_value !== (main_style_value = /*hidden*/ ctx[1] ? 'display:none;' : '')) {
+    				attr_dev(main, "style", main_style_value);
+    			}
+
+    			if (dirty & /*focused*/ 8) {
+    				toggle_class(main, "focused", /*focused*/ ctx[3]);
+    			}
+    		},
+    		i: noop,
+    		o: noop,
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(main);
+    			mounted = false;
+    			run_all(dispose);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_fragment$5.name,
+    		type: "component",
+    		source: "",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function instance$5($$self, $$props, $$invalidate) {
+    	let { $$slots: slots = {}, $$scope } = $$props;
+    	validate_slots('ButtonInput', slots, []);
+    	let { hidden = false } = $$props;
+    	let { placeholder = "" } = $$props;
+    	let { value = "" } = $$props;
+    	let focused = false;
+
+    	const setFocus = state => {
+    		$$invalidate(3, focused = state);
+    	};
+
+    	const writable_props = ['hidden', 'placeholder', 'value'];
+
+    	Object.keys($$props).forEach(key => {
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console.warn(`<ButtonInput> was created with unknown prop '${key}'`);
+    	});
+
+    	function click_handler(event) {
+    		bubble.call(this, $$self, event);
+    	}
+
+    	function input_input_handler() {
+    		value = this.value;
+    		$$invalidate(0, value);
+    	}
+
+    	const focus_handler = () => {
+    		setFocus(true);
+    	};
+
+    	const blur_handler = () => setFocus(false);
+
+    	$$self.$$set = $$props => {
+    		if ('hidden' in $$props) $$invalidate(1, hidden = $$props.hidden);
+    		if ('placeholder' in $$props) $$invalidate(2, placeholder = $$props.placeholder);
+    		if ('value' in $$props) $$invalidate(0, value = $$props.value);
+    	};
+
+    	$$self.$capture_state = () => ({
+    		hidden,
+    		placeholder,
+    		value,
+    		focused,
+    		setFocus
+    	});
+
+    	$$self.$inject_state = $$props => {
+    		if ('hidden' in $$props) $$invalidate(1, hidden = $$props.hidden);
+    		if ('placeholder' in $$props) $$invalidate(2, placeholder = $$props.placeholder);
+    		if ('value' in $$props) $$invalidate(0, value = $$props.value);
+    		if ('focused' in $$props) $$invalidate(3, focused = $$props.focused);
+    	};
+
+    	if ($$props && "$$inject" in $$props) {
+    		$$self.$inject_state($$props.$$inject);
+    	}
+
+    	return [
+    		value,
+    		hidden,
+    		placeholder,
+    		focused,
+    		setFocus,
+    		click_handler,
+    		input_input_handler,
+    		focus_handler,
+    		blur_handler
+    	];
+    }
+
+    class ButtonInput extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$5, create_fragment$5, safe_not_equal, { hidden: 1, placeholder: 2, value: 0 });
+
+    		dispatch_dev("SvelteRegisterComponent", {
+    			component: this,
+    			tagName: "ButtonInput",
+    			options,
+    			id: create_fragment$5.name
+    		});
+    	}
+
+    	get hidden() {
+    		throw new Error("<ButtonInput>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set hidden(value) {
+    		throw new Error("<ButtonInput>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get placeholder() {
+    		throw new Error("<ButtonInput>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set placeholder(value) {
+    		throw new Error("<ButtonInput>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get value() {
+    		throw new Error("<ButtonInput>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set value(value) {
+    		throw new Error("<ButtonInput>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+    }
+
+    /* src/pages/Home.svelte generated by Svelte v3.43.1 */
+    const file$3 = "src/pages/Home.svelte";
+
+    function create_fragment$4(ctx) {
+    	let t0;
+    	let section;
+    	let h1;
+    	let t2;
+    	let buttoninput;
+    	let updating_value;
+    	let current;
+
+    	function buttoninput_value_binding(value) {
+    		/*buttoninput_value_binding*/ ctx[2](value);
+    	}
+
+    	let buttoninput_props = { placeholder: "Room ID" };
+
+    	if (/*roomID*/ ctx[0] !== void 0) {
+    		buttoninput_props.value = /*roomID*/ ctx[0];
+    	}
+
+    	buttoninput = new ButtonInput({ props: buttoninput_props, $$inline: true });
+    	binding_callbacks.push(() => bind(buttoninput, 'value', buttoninput_value_binding));
+    	buttoninput.$on("click", /*joinRoom*/ ctx[1]);
+
+    	const block = {
+    		c: function create() {
+    			t0 = space();
+    			section = element("section");
+    			h1 = element("h1");
+    			h1.textContent = "DropNow";
+    			t2 = space();
+    			create_component(buttoninput.$$.fragment);
+    			document.title = "DropNow";
+    			attr_dev(h1, "class", "svelte-anrdqc");
+    			add_location(h1, file$3, 11, 4, 266);
+    			attr_dev(section, "class", "svelte-anrdqc");
+    			add_location(section, file$3, 10, 0, 252);
+    		},
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, t0, anchor);
+    			insert_dev(target, section, anchor);
+    			append_dev(section, h1);
+    			append_dev(section, t2);
+    			mount_component(buttoninput, section, null);
+    			current = true;
+    		},
+    		p: function update(ctx, [dirty]) {
+    			const buttoninput_changes = {};
+
+    			if (!updating_value && dirty & /*roomID*/ 1) {
+    				updating_value = true;
+    				buttoninput_changes.value = /*roomID*/ ctx[0];
+    				add_flush_callback(() => updating_value = false);
+    			}
+
+    			buttoninput.$set(buttoninput_changes);
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(buttoninput.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(buttoninput.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(t0);
+    			if (detaching) detach_dev(section);
+    			destroy_component(buttoninput);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_fragment$4.name,
+    		type: "component",
+    		source: "",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function instance$4($$self, $$props, $$invalidate) {
+    	let { $$slots: slots = {}, $$scope } = $$props;
+    	validate_slots('Home', slots, []);
+    	let roomID;
+    	const joinRoom = () => page.redirect(`/room/${roomID}`);
+    	const writable_props = [];
+
+    	Object.keys($$props).forEach(key => {
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console.warn(`<Home> was created with unknown prop '${key}'`);
+    	});
+
+    	function buttoninput_value_binding(value) {
+    		roomID = value;
+    		$$invalidate(0, roomID);
+    	}
+
+    	$$self.$capture_state = () => ({ page, ButtonInput, roomID, joinRoom });
+
+    	$$self.$inject_state = $$props => {
+    		if ('roomID' in $$props) $$invalidate(0, roomID = $$props.roomID);
+    	};
+
+    	if ($$props && "$$inject" in $$props) {
+    		$$self.$inject_state($$props.$$inject);
+    	}
+
+    	return [roomID, joinRoom, buttoninput_value_binding];
+    }
+
+    class Home extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$4, create_fragment$4, safe_not_equal, {});
+
+    		dispatch_dev("SvelteRegisterComponent", {
+    			component: this,
+    			tagName: "Home",
+    			options,
+    			id: create_fragment$4.name
+    		});
+    	}
+    }
+
+    /* src/components/Button/Button.svelte generated by Svelte v3.43.1 */
+
+    const file$2 = "src/components/Button/Button.svelte";
+
+    function create_fragment$3(ctx) {
+    	let main;
+    	let p;
+    	let main_style_value;
+    	let current;
+    	let mounted;
+    	let dispose;
+    	const default_slot_template = /*#slots*/ ctx[2].default;
+    	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[1], null);
+
+    	const block = {
+    		c: function create() {
+    			main = element("main");
+    			p = element("p");
+    			if (default_slot) default_slot.c();
+    			add_location(p, file$2, 4, 4, 132);
+    			attr_dev(main, "class", "wrapper svelte-t3g8rd");
+    			attr_dev(main, "style", main_style_value = /*hidden*/ ctx[0] ? 'display:none;' : '');
+    			add_location(main, file$2, 3, 0, 56);
+    		},
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, main, anchor);
+    			append_dev(main, p);
+
+    			if (default_slot) {
+    				default_slot.m(p, null);
+    			}
+
+    			current = true;
+
+    			if (!mounted) {
+    				dispose = listen_dev(main, "click", /*click_handler*/ ctx[3], false, false, false);
+    				mounted = true;
+    			}
+    		},
+    		p: function update(ctx, [dirty]) {
+    			if (default_slot) {
+    				if (default_slot.p && (!current || dirty & /*$$scope*/ 2)) {
+    					update_slot_base(
+    						default_slot,
+    						default_slot_template,
+    						ctx,
+    						/*$$scope*/ ctx[1],
+    						!current
+    						? get_all_dirty_from_scope(/*$$scope*/ ctx[1])
+    						: get_slot_changes(default_slot_template, /*$$scope*/ ctx[1], dirty, null),
+    						null
+    					);
+    				}
+    			}
+
+    			if (!current || dirty & /*hidden*/ 1 && main_style_value !== (main_style_value = /*hidden*/ ctx[0] ? 'display:none;' : '')) {
+    				attr_dev(main, "style", main_style_value);
+    			}
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(default_slot, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(default_slot, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(main);
+    			if (default_slot) default_slot.d(detaching);
+    			mounted = false;
+    			dispose();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_fragment$3.name,
+    		type: "component",
+    		source: "",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function instance$3($$self, $$props, $$invalidate) {
+    	let { $$slots: slots = {}, $$scope } = $$props;
+    	validate_slots('Button', slots, ['default']);
+    	let { hidden = false } = $$props;
+    	const writable_props = ['hidden'];
+
+    	Object.keys($$props).forEach(key => {
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console.warn(`<Button> was created with unknown prop '${key}'`);
+    	});
+
+    	function click_handler(event) {
+    		bubble.call(this, $$self, event);
+    	}
+
+    	$$self.$$set = $$props => {
+    		if ('hidden' in $$props) $$invalidate(0, hidden = $$props.hidden);
+    		if ('$$scope' in $$props) $$invalidate(1, $$scope = $$props.$$scope);
+    	};
+
+    	$$self.$capture_state = () => ({ hidden });
+
+    	$$self.$inject_state = $$props => {
+    		if ('hidden' in $$props) $$invalidate(0, hidden = $$props.hidden);
+    	};
+
+    	if ($$props && "$$inject" in $$props) {
+    		$$self.$inject_state($$props.$$inject);
+    	}
+
+    	return [hidden, $$scope, slots, click_handler];
+    }
+
+    class Button extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$3, create_fragment$3, safe_not_equal, { hidden: 0 });
+
+    		dispatch_dev("SvelteRegisterComponent", {
+    			component: this,
+    			tagName: "Button",
+    			options,
+    			id: create_fragment$3.name
+    		});
+    	}
+
+    	get hidden() {
+    		throw new Error("<Button>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set hidden(value) {
+    		throw new Error("<Button>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+    }
+
+    /* src/pages/Room.svelte generated by Svelte v3.43.1 */
+
+    const { console: console_1 } = globals;
+    const file$1 = "src/pages/Room.svelte";
+
+    // (232:4) {#if rtcStatus != 'connected'}
+    function create_if_block(ctx) {
+    	let button;
+    	let current;
+
+    	button = new Button({
+    			props: {
+    				$$slots: { default: [create_default_slot] },
+    				$$scope: { ctx }
+    			},
+    			$$inline: true
+    		});
+
+    	button.$on("click", function () {
+    		if (is_function(/*connect*/ ctx[2])) /*connect*/ ctx[2].apply(this, arguments);
+    	});
+
+    	const block = {
+    		c: function create() {
+    			create_component(button.$$.fragment);
+    		},
+    		m: function mount(target, anchor) {
+    			mount_component(button, target, anchor);
+    			current = true;
+    		},
+    		p: function update(new_ctx, dirty) {
+    			ctx = new_ctx;
+    			const button_changes = {};
+
+    			if (dirty & /*$$scope*/ 8388608) {
+    				button_changes.$$scope = { dirty, ctx };
+    			}
+
+    			button.$set(button_changes);
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(button.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(button.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			destroy_component(button, detaching);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block.name,
+    		type: "if",
+    		source: "(232:4) {#if rtcStatus != 'connected'}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (233:8) <Button on:click={connect}>
+    function create_default_slot(ctx) {
+    	let t;
+
+    	const block = {
+    		c: function create() {
+    			t = text("Connect");
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, t, anchor);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(t);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_default_slot.name,
+    		type: "slot",
+    		source: "(233:8) <Button on:click={connect}>",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function create_fragment$2(ctx) {
+    	let main;
+    	let h1;
+    	let t2;
+    	let t3;
+    	let buttoninput;
+    	let updating_value;
+    	let t4;
+    	let input;
+    	let input_hidden_value;
+    	let t5;
+    	let div0;
+    	let progress0;
+    	let t6;
+    	let t7;
+    	let t8;
+    	let progress1;
+    	let t9;
+    	let t10;
+    	let t11;
+    	let a;
+    	let t13;
+    	let div1;
+    	let p0;
+    	let t15;
+    	let span0;
+    	let span0_class_value;
+    	let t16;
+    	let p1;
+    	let t18;
+    	let span1;
+    	let span1_class_value;
+    	let current;
+    	let mounted;
+    	let dispose;
+    	let if_block = /*rtcStatus*/ ctx[1] != 'connected' && create_if_block(ctx);
+
+    	function buttoninput_value_binding(value) {
+    		/*buttoninput_value_binding*/ ctx[11](value);
+    	}
+
+    	let buttoninput_props = {
+    		hidden: /*rtcStatus*/ ctx[1] !== 'connected',
+    		placeholder: "Send message"
+    	};
+
+    	if (/*msgContent*/ ctx[3] !== void 0) {
+    		buttoninput_props.value = /*msgContent*/ ctx[3];
+    	}
+
+    	buttoninput = new ButtonInput({ props: buttoninput_props, $$inline: true });
+    	binding_callbacks.push(() => bind(buttoninput, 'value', buttoninput_value_binding));
+    	buttoninput.$on("click", /*sendMsg*/ ctx[9]);
+
+    	const block = {
+    		c: function create() {
+    			main = element("main");
+    			h1 = element("h1");
+    			h1.textContent = `Room ${/*id*/ ctx[8]}`;
+    			t2 = space();
+    			if (if_block) if_block.c();
+    			t3 = space();
+    			create_component(buttoninput.$$.fragment);
+    			t4 = space();
+    			input = element("input");
+    			t5 = space();
+    			div0 = element("div");
+    			progress0 = element("progress");
+    			t6 = text(/*uploadProg*/ ctx[6]);
+    			t7 = text("%");
+    			t8 = space();
+    			progress1 = element("progress");
+    			t9 = text(/*downloadProg*/ ctx[7]);
+    			t10 = text("%");
+    			t11 = space();
+    			a = element("a");
+    			a.textContent = "download";
+    			t13 = space();
+    			div1 = element("div");
+    			p0 = element("p");
+    			p0.textContent = "ws";
+    			t15 = space();
+    			span0 = element("span");
+    			t16 = space();
+    			p1 = element("p");
+    			p1.textContent = "rtc";
+    			t18 = space();
+    			span1 = element("span");
+    			add_location(h1, file$1, 223, 4, 7801);
+    			input.hidden = input_hidden_value = /*rtcStatus*/ ctx[1] !== 'connected';
+    			attr_dev(input, "type", "file");
+    			add_location(input, file$1, 238, 4, 8145);
+    			progress0.value = /*uploadProg*/ ctx[6];
+    			attr_dev(progress0, "max", "1");
+    			add_location(progress0, file$1, 241, 8, 8315);
+    			progress1.value = /*downloadProg*/ ctx[7];
+    			attr_dev(progress1, "max", "1");
+    			add_location(progress1, file$1, 242, 8, 8385);
+    			set_style(div0, "display", /*rtcStatus*/ ctx[1] !== 'connected' ? 'none' : 'flex');
+    			set_style(div0, "flex-direction", "column");
+    			add_location(div0, file$1, 240, 4, 8216);
+    			a.hidden = true;
+    			attr_dev(a, "href", "/#");
+    			add_location(a, file$1, 244, 4, 8466);
+    			add_location(main, file$1, 222, 0, 7790);
+    			add_location(p0, file$1, 248, 4, 8557);
+    			attr_dev(span0, "class", span0_class_value = "status-dot " + (/*wsStatus*/ ctx[0] == 'connected' ? 'green' : 'red') + " svelte-zdajb3");
+    			add_location(span0, file$1, 249, 4, 8571);
+    			add_location(p1, file$1, 251, 4, 8653);
+
+    			attr_dev(span1, "class", span1_class_value = "status-dot " + (/*rtcStatus*/ ctx[1] == 'connected'
+    			? 'green'
+    			: /*rtcStatus*/ ctx[1] == 'connecting' ? 'yellow' : 'red') + " svelte-zdajb3");
+
+    			add_location(span1, file$1, 252, 4, 8668);
+    			attr_dev(div1, "id", "status");
+    			attr_dev(div1, "class", "svelte-zdajb3");
+    			add_location(div1, file$1, 247, 0, 8535);
+    		},
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, main, anchor);
+    			append_dev(main, h1);
+    			append_dev(main, t2);
+    			if (if_block) if_block.m(main, null);
+    			append_dev(main, t3);
+    			mount_component(buttoninput, main, null);
+    			append_dev(main, t4);
+    			append_dev(main, input);
+    			append_dev(main, t5);
+    			append_dev(main, div0);
+    			append_dev(div0, progress0);
+    			append_dev(progress0, t6);
+    			append_dev(progress0, t7);
+    			append_dev(div0, t8);
+    			append_dev(div0, progress1);
+    			append_dev(progress1, t9);
+    			append_dev(progress1, t10);
+    			append_dev(main, t11);
+    			append_dev(main, a);
+    			/*a_binding*/ ctx[13](a);
+    			insert_dev(target, t13, anchor);
+    			insert_dev(target, div1, anchor);
+    			append_dev(div1, p0);
+    			append_dev(div1, t15);
+    			append_dev(div1, span0);
+    			append_dev(div1, t16);
+    			append_dev(div1, p1);
+    			append_dev(div1, t18);
+    			append_dev(div1, span1);
+    			current = true;
+
+    			if (!mounted) {
+    				dispose = listen_dev(input, "change", /*input_change_handler*/ ctx[12]);
+    				mounted = true;
+    			}
+    		},
+    		p: function update(ctx, [dirty]) {
+    			if (/*rtcStatus*/ ctx[1] != 'connected') {
+    				if (if_block) {
+    					if_block.p(ctx, dirty);
+
+    					if (dirty & /*rtcStatus*/ 2) {
+    						transition_in(if_block, 1);
+    					}
+    				} else {
+    					if_block = create_if_block(ctx);
+    					if_block.c();
+    					transition_in(if_block, 1);
+    					if_block.m(main, t3);
+    				}
+    			} else if (if_block) {
+    				group_outros();
+
+    				transition_out(if_block, 1, 1, () => {
+    					if_block = null;
+    				});
+
+    				check_outros();
+    			}
+
+    			const buttoninput_changes = {};
+    			if (dirty & /*rtcStatus*/ 2) buttoninput_changes.hidden = /*rtcStatus*/ ctx[1] !== 'connected';
+
+    			if (!updating_value && dirty & /*msgContent*/ 8) {
+    				updating_value = true;
+    				buttoninput_changes.value = /*msgContent*/ ctx[3];
+    				add_flush_callback(() => updating_value = false);
+    			}
+
+    			buttoninput.$set(buttoninput_changes);
+
+    			if (!current || dirty & /*rtcStatus*/ 2 && input_hidden_value !== (input_hidden_value = /*rtcStatus*/ ctx[1] !== 'connected')) {
+    				prop_dev(input, "hidden", input_hidden_value);
+    			}
+
+    			if (!current || dirty & /*uploadProg*/ 64) set_data_dev(t6, /*uploadProg*/ ctx[6]);
+
+    			if (!current || dirty & /*uploadProg*/ 64) {
+    				prop_dev(progress0, "value", /*uploadProg*/ ctx[6]);
+    			}
+
+    			if (!current || dirty & /*downloadProg*/ 128) set_data_dev(t9, /*downloadProg*/ ctx[7]);
+
+    			if (!current || dirty & /*downloadProg*/ 128) {
+    				prop_dev(progress1, "value", /*downloadProg*/ ctx[7]);
+    			}
+
+    			if (!current || dirty & /*rtcStatus*/ 2) {
+    				set_style(div0, "display", /*rtcStatus*/ ctx[1] !== 'connected' ? 'none' : 'flex');
+    			}
+
+    			if (!current || dirty & /*wsStatus*/ 1 && span0_class_value !== (span0_class_value = "status-dot " + (/*wsStatus*/ ctx[0] == 'connected' ? 'green' : 'red') + " svelte-zdajb3")) {
+    				attr_dev(span0, "class", span0_class_value);
+    			}
+
+    			if (!current || dirty & /*rtcStatus*/ 2 && span1_class_value !== (span1_class_value = "status-dot " + (/*rtcStatus*/ ctx[1] == 'connected'
+    			? 'green'
+    			: /*rtcStatus*/ ctx[1] == 'connecting' ? 'yellow' : 'red') + " svelte-zdajb3")) {
+    				attr_dev(span1, "class", span1_class_value);
+    			}
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(if_block);
+    			transition_in(buttoninput.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(if_block);
+    			transition_out(buttoninput.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(main);
+    			if (if_block) if_block.d();
+    			destroy_component(buttoninput);
+    			/*a_binding*/ ctx[13](null);
+    			if (detaching) detach_dev(t13);
+    			if (detaching) detach_dev(div1);
+    			mounted = false;
+    			dispose();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_fragment$2.name,
+    		type: "component",
+    		source: "",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function instance$2($$self, $$props, $$invalidate) {
+    	let { $$slots: slots = {}, $$scope } = $$props;
+    	validate_slots('Room', slots, []);
+    	let { params } = $$props;
+    	const { id } = params;
+    	let wsStatus;
+    	let pc;
+    	let rtcStatus;
+    	let iceConnState;
+    	let datac;
+    	let received = [];
+
+    	let connect = () => {
+    		
+    	};
+
+    	let hostname;
+
+    	const SignalRTC = async () => {
+    		/* const hostname = window.location.hostname; */
+    		/* const hostname = window.location.host; */
+    		/* hostname = '0.0.0.0:3000'; */
+    		hostname = '192.168.2.249:3000';
+
+    		/* hostname = '127.0.0.1:3000'; */
+    		let ws = new WebSocket(`ws://${hostname}/ws/${id}`);
+
+    		ws.onmessage = ev => onsignal(ev.data);
+    		ws.onclose = () => $$invalidate(0, wsStatus = 'closed');
+    		ws.onerror = err => console.log(err);
+
+    		// Wait until websocket connects
+    		await new Promise((resolve, _) => ws.onopen = () => {
+    				$$invalidate(0, wsStatus = 'connected');
+    				resolve();
+    			});
+
+    		console.log();
+
+    		const config = {
+    			iceServers: [
+    				{
+    					/* urls: ['stun:stun.l.google.com:19302', 'stun:stun.l.google.com:19302', 'stun:stun1.l.google.com:19302', 'stun:stun2.l.google.com:19302'] */
+    					urls: ['stun:stun1.l.google.com:19302', 'stun:stun2.l.google.com:19302']
+    				}
+    			]
+    		};
+
+    		pc = new RTCPeerConnection(config);
+    		datac = pc.createDataChannel('dataChan', { negotiated: true, id: 0, ordered: true });
+    		datac.binaryType = "arraybuffer";
+    		let data = [];
+    		let receivedBytes = 0;
+    		let fileInfo;
+
+    		datac.onmessage = ev => {
+    			var _a;
+    			console.log('recieved:', ev.data);
+
+    			if (typeof ev.data == "string") {
+    				let info = JSON.parse(ev.data);
+
+    				if (((_a = info) === null || _a === void 0
+    				? void 0
+    				: _a.filename) !== undefined) {
+    					fileInfo = info;
+    					data = [];
+    					receivedBytes = 0;
+    					$$invalidate(7, downloadProg = 0);
+    				} else {
+    					let uploadTerm = info;
+
+    					if (uploadTerm.done) {
+    						const received = new Blob(data, { type: fileInfo.mime });
+    						console.log("blob len", received.size);
+    						$$invalidate(5, downloadAnchor.href = URL.createObjectURL(received), downloadAnchor);
+    						$$invalidate(5, downloadAnchor.download = fileInfo.filename, downloadAnchor);
+    						downloadAnchor.click();
+    					}
+    				}
+    			} else {
+    				receivedBytes += ev.data.byteLength;
+    				console.log(receivedBytes);
+    				data.push(ev.data);
+
+    				if (fileInfo.size != 0) {
+    					$$invalidate(7, downloadProg = receivedBytes / fileInfo.size);
+    					console.log(downloadProg);
+    				}
+    			}
+    		};
+
+    		
+
+    		// Send a signal to websocket as JSON
+    		const sendSignal = signal => ws === null || ws === void 0
+    		? void 0
+    		: ws.send(JSON.stringify(signal));
+
+    		// Register RTC events
+    		pc.onconnectionstatechange = () => {
+    			$$invalidate(1, rtcStatus = pc.connectionState);
+
+    			if (pc.connectionState === 'connected') {
+    				console.log('connected!');
+    			}
+    		};
+
+    		pc.onicecandidate = ev => sendICECandidate(ev);
+
+    		/* pc.onnegotiationneeded = () => negotiate(); */
+    		pc.oniceconnectionstatechange = () => iceStateChange();
+
+    		pc.onsignalingstatechange = () => signalStateChange();
+    		pc.onicegatheringstatechange = () => console.log(pc.iceGatheringState);
+    		console.log(pc);
+
+    		for (let key in pc) {
+    			if ((/^on/).test(key)) {
+    				pc.addEventListener(key.slice(2), ev => console.log(key, ev));
+    			}
+    		}
+
+    		
+
+    		// Start negotiation, create an offer and send an SDP signal
+    		const negotiate = async () => {
+    			console.log('negotiate');
+
+    			// TODO: i think this is redundant
+    			// let offerOpts: RTCOfferOptions = {
+    			//     offerToReceiveAudio: true,
+    			//     offerToReceiveVideo: true
+    			// }
+    			const offer = await pc.createOffer();
+
+    			await pc.setLocalDescription(new RTCSessionDescription(offer));
+    			sendSignal({ type: 'sdp', data: offer });
+    		};
+
+    		$$invalidate(2, connect = negotiate);
+
+    		// Send an ICE candidate to remote client
+    		const sendICECandidate = ev => {
+    			if (ev.candidate) sendSignal({
+    				type: 'ice-candidate',
+    				data: ev.candidate
+    			});
+    		};
+
+    		const iceStateChange = () => {
+    			iceConnState = pc.iceConnectionState;
+
+    			switch (pc.iceConnectionState) {
+    				case 'closed':
+    				case 'failed':
+    					pc.restartIce();
+    					// TODO: ask user to retry
+    					// close the connection
+    					break;
+    			}
+    		};
+
+    		// Same as iceStateChange
+    		const signalStateChange = () => {
+    			switch (pc.signalingState) {
+    							}
+    		};
+
+    		const onsignal = async msg => {
+    			console.log(msg);
+    			const signal = JSON.parse(msg);
+
+    			switch (signal === null || signal === void 0
+    			? void 0
+    			: signal.type) {
+    				case 'sdp':
+    					await onsdp(signal.data);
+    					break;
+    				case 'ice-candidate':
+    					await pc.addIceCandidate(signal.data);
+    					break;
+    			}
+    		};
+
+    		// Update local and remote client descriptions. If an offer is sent, respond with an offer
+    		const onsdp = async sdp => {
+    			switch (sdp.type) {
+    				case 'offer':
+    					await pc.setRemoteDescription(new RTCSessionDescription(sdp));
+    					const answer = await pc.createAnswer();
+    					await pc.setLocalDescription(answer);
+    					sendSignal({ type: 'sdp', data: answer });
+    					break;
+    				case 'answer':
+    					await pc.setRemoteDescription(new RTCSessionDescription(sdp));
+    					break;
+    			}
+    		};
+    	}; /* negotiate(); */
+
+    	SignalRTC();
+    	const chunkSize = 16 * 1024;
+    	let msgContent;
+
+    	const sendMsg = async () => {
+    		if ((datac === null || datac === void 0
+    		? void 0
+    		: datac.readyState) == 'open') {
+    			var file = files[0];
+    			uploadedBytes = 0;
+    			$$invalidate(6, uploadProg = 0);
+
+    			let uploadInfo = {
+    				filename: file.name,
+    				size: file.size,
+    				mime: file.type
+    			};
+
+    			datac.send(JSON.stringify(uploadInfo));
+    			let start = 0;
+    			let end = 0;
+
+    			while (end + chunkSize <= file.size) {
+    				end += chunkSize;
+    				await send(start, end, file);
+    				start = end;
+    			}
+
+    			end = file.size;
+    			await send(start, end, file);
+    			let uploadTerm = { done: true, error: false };
+    			datac.send(JSON.stringify(uploadTerm));
+
+    			/* datac.send(msgContent); */
+    			$$invalidate(3, msgContent = '');
+    		}
+    	};
+
+    	let uploadedBytes = 0;
+
+    	const send = async (start, end, file) => {
+    		if (datac.bufferedAmount > datac.bufferedAmountLowThreshold) {
+    			await new Promise((resolve, _) => {
+    					datac.onbufferedamountlow = () => {
+    						datac.onbufferedamountlow = null;
+    						resolve();
+    					};
+    				});
+    		}
+
+    		let data = await file.slice(start, end).arrayBuffer();
+    		datac.send(data);
+    		uploadedBytes += data.byteLength;
+    		$$invalidate(6, uploadProg = uploadedBytes / file.size);
+    	};
+
+    	let files;
+    	let downloadAnchor;
+    	let uploadProg = 0;
+    	let downloadProg = 0;
+    	const writable_props = ['params'];
+
+    	Object.keys($$props).forEach(key => {
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console_1.warn(`<Room> was created with unknown prop '${key}'`);
+    	});
+
+    	function buttoninput_value_binding(value) {
+    		msgContent = value;
+    		$$invalidate(3, msgContent);
+    	}
+
+    	function input_change_handler() {
+    		files = this.files;
+    		$$invalidate(4, files);
+    	}
+
+    	function a_binding($$value) {
+    		binding_callbacks[$$value ? 'unshift' : 'push'](() => {
+    			downloadAnchor = $$value;
+    			$$invalidate(5, downloadAnchor);
+    		});
+    	}
+
+    	$$self.$$set = $$props => {
+    		if ('params' in $$props) $$invalidate(10, params = $$props.params);
+    	};
+
+    	$$self.$capture_state = () => ({
+    		Button,
+    		ButtonInput,
+    		params,
+    		id,
+    		wsStatus,
+    		pc,
+    		rtcStatus,
+    		iceConnState,
+    		datac,
+    		received,
+    		connect,
+    		hostname,
+    		SignalRTC,
+    		chunkSize,
+    		msgContent,
+    		sendMsg,
+    		uploadedBytes,
+    		send,
+    		files,
+    		downloadAnchor,
+    		uploadProg,
+    		downloadProg
+    	});
+
+    	$$self.$inject_state = $$props => {
+    		if ('params' in $$props) $$invalidate(10, params = $$props.params);
+    		if ('wsStatus' in $$props) $$invalidate(0, wsStatus = $$props.wsStatus);
+    		if ('pc' in $$props) pc = $$props.pc;
+    		if ('rtcStatus' in $$props) $$invalidate(1, rtcStatus = $$props.rtcStatus);
+    		if ('iceConnState' in $$props) iceConnState = $$props.iceConnState;
+    		if ('datac' in $$props) datac = $$props.datac;
+    		if ('received' in $$props) received = $$props.received;
+    		if ('connect' in $$props) $$invalidate(2, connect = $$props.connect);
+    		if ('hostname' in $$props) hostname = $$props.hostname;
+    		if ('msgContent' in $$props) $$invalidate(3, msgContent = $$props.msgContent);
+    		if ('uploadedBytes' in $$props) uploadedBytes = $$props.uploadedBytes;
+    		if ('files' in $$props) $$invalidate(4, files = $$props.files);
+    		if ('downloadAnchor' in $$props) $$invalidate(5, downloadAnchor = $$props.downloadAnchor);
+    		if ('uploadProg' in $$props) $$invalidate(6, uploadProg = $$props.uploadProg);
+    		if ('downloadProg' in $$props) $$invalidate(7, downloadProg = $$props.downloadProg);
+    	};
+
+    	if ($$props && "$$inject" in $$props) {
+    		$$self.$inject_state($$props.$$inject);
+    	}
+
+    	return [
+    		wsStatus,
+    		rtcStatus,
+    		connect,
+    		msgContent,
+    		files,
+    		downloadAnchor,
+    		uploadProg,
+    		downloadProg,
+    		id,
+    		sendMsg,
+    		params,
+    		buttoninput_value_binding,
+    		input_change_handler,
+    		a_binding
+    	];
+    }
+
+    class Room extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$2, create_fragment$2, safe_not_equal, { params: 10 });
+
+    		dispatch_dev("SvelteRegisterComponent", {
+    			component: this,
+    			tagName: "Room",
+    			options,
+    			id: create_fragment$2.name
+    		});
+
+    		const { ctx } = this.$$;
+    		const props = options.props || {};
+
+    		if (/*params*/ ctx[10] === undefined && !('params' in props)) {
+    			console_1.warn("<Room> was created without expected prop 'params'");
+    		}
+    	}
+
+    	get params() {
+    		throw new Error("<Room>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set params(value) {
+    		throw new Error("<Room>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+    }
+
+    /* src/pages/NotFound.svelte generated by Svelte v3.43.1 */
+    const file = "src/pages/NotFound.svelte";
+
+    function create_fragment$1(ctx) {
+    	let main;
+    	let svg;
+    	let line;
+    	let polyline;
+    	let t0;
+    	let h1;
+    	let mounted;
+    	let dispose;
+
+    	const block = {
+    		c: function create() {
+    			main = element("main");
+    			svg = svg_element("svg");
+    			line = svg_element("line");
+    			polyline = svg_element("polyline");
+    			t0 = space();
+    			h1 = element("h1");
+    			h1.textContent = "404";
+    			attr_dev(line, "x1", "19");
+    			attr_dev(line, "y1", "12");
+    			attr_dev(line, "x2", "5");
+    			attr_dev(line, "y2", "12");
+    			add_location(line, file, 5, 180, 300);
+    			attr_dev(polyline, "points", "12 19 5 12 12 5");
+    			add_location(polyline, file, 5, 218, 338);
+    			attr_dev(svg, "xmlns", "http://www.w3.org/2000/svg");
+    			attr_dev(svg, "viewBox", "0 0 24 24");
+    			attr_dev(svg, "fill", "none");
+    			attr_dev(svg, "stroke", "currentColor");
+    			attr_dev(svg, "stroke-linecap", "round");
+    			attr_dev(svg, "stroke-linejoin", "round");
+    			attr_dev(svg, "class", "feather feather-arrow-left svelte-o463b0");
+    			add_location(svg, file, 5, 4, 124);
+    			attr_dev(h1, "class", "svelte-o463b0");
+    			add_location(h1, file, 6, 4, 385);
+    			attr_dev(main, "class", "svelte-o463b0");
+    			add_location(main, file, 4, 0, 95);
+    		},
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, main, anchor);
+    			append_dev(main, svg);
+    			append_dev(svg, line);
+    			append_dev(svg, polyline);
+    			append_dev(main, t0);
+    			append_dev(main, h1);
+
+    			if (!mounted) {
+    				dispose = listen_dev(main, "click", /*goBack*/ ctx[0], false, false, false);
+    				mounted = true;
+    			}
+    		},
+    		p: noop,
+    		i: noop,
+    		o: noop,
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(main);
+    			mounted = false;
+    			dispose();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_fragment$1.name,
+    		type: "component",
+    		source: "",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function instance$1($$self, $$props, $$invalidate) {
+    	let { $$slots: slots = {}, $$scope } = $$props;
+    	validate_slots('NotFound', slots, []);
+    	const goBack = () => page.redirect('/');
+    	const writable_props = [];
+
+    	Object.keys($$props).forEach(key => {
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console.warn(`<NotFound> was created with unknown prop '${key}'`);
+    	});
+
+    	$$self.$capture_state = () => ({ page, goBack });
+    	return [goBack];
+    }
+
+    class NotFound extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$1, create_fragment$1, safe_not_equal, {});
+
+    		dispatch_dev("SvelteRegisterComponent", {
+    			component: this,
+    			tagName: "NotFound",
+    			options,
+    			id: create_fragment$1.name
+    		});
+    	}
+    }
+
+    /* src/App.svelte generated by Svelte v3.43.1 */
+
+    function create_fragment(ctx) {
+    	let t;
+    	let switch_instance;
+    	let switch_instance_anchor;
+    	let current;
+    	var switch_value = /*current*/ ctx[0];
+
+    	function switch_props(ctx) {
+    		return {
+    			props: { params: /*params*/ ctx[1] },
+    			$$inline: true
+    		};
+    	}
+
+    	if (switch_value) {
+    		switch_instance = new switch_value(switch_props(ctx));
+    	}
+
+    	const block = {
+    		c: function create() {
+    			t = space();
+    			if (switch_instance) create_component(switch_instance.$$.fragment);
+    			switch_instance_anchor = empty();
+    			document.title = "DropNow";
+    		},
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, t, anchor);
+
+    			if (switch_instance) {
+    				mount_component(switch_instance, target, anchor);
+    			}
+
+    			insert_dev(target, switch_instance_anchor, anchor);
+    			current = true;
+    		},
+    		p: function update(ctx, [dirty]) {
+    			const switch_instance_changes = {};
+    			if (dirty & /*params*/ 2) switch_instance_changes.params = /*params*/ ctx[1];
+
+    			if (switch_value !== (switch_value = /*current*/ ctx[0])) {
+    				if (switch_instance) {
+    					group_outros();
+    					const old_component = switch_instance;
+
+    					transition_out(old_component.$$.fragment, 1, 0, () => {
+    						destroy_component(old_component, 1);
+    					});
+
+    					check_outros();
+    				}
+
+    				if (switch_value) {
+    					switch_instance = new switch_value(switch_props(ctx));
+    					create_component(switch_instance.$$.fragment);
+    					transition_in(switch_instance.$$.fragment, 1);
+    					mount_component(switch_instance, switch_instance_anchor.parentNode, switch_instance_anchor);
+    				} else {
+    					switch_instance = null;
+    				}
+    			} else if (switch_value) {
+    				switch_instance.$set(switch_instance_changes);
+    			}
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			if (switch_instance) transition_in(switch_instance.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			if (switch_instance) transition_out(switch_instance.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(t);
+    			if (detaching) detach_dev(switch_instance_anchor);
+    			if (switch_instance) destroy_component(switch_instance, detaching);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_fragment.name,
+    		type: "component",
+    		source: "",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function instance($$self, $$props, $$invalidate) {
+    	let { $$slots: slots = {}, $$scope } = $$props;
+    	validate_slots('App', slots, []);
+    	let current;
+    	let params;
+    	page('/', () => $$invalidate(0, current = Home));
+
+    	page(
+    		'/room/:id',
+    		(ctx, next) => {
+    			$$invalidate(1, params = ctx.params);
+    			next();
+    		},
+    		() => $$invalidate(0, current = Room)
+    	);
+
+    	page('*', () => $$invalidate(0, current = NotFound));
+    	page.start();
+    	const writable_props = [];
+
+    	Object.keys($$props).forEach(key => {
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console.warn(`<App> was created with unknown prop '${key}'`);
+    	});
+
+    	$$self.$capture_state = () => ({
+    		page,
+    		Home,
+    		Room,
+    		NotFound,
+    		current,
+    		params
+    	});
+
+    	$$self.$inject_state = $$props => {
+    		if ('current' in $$props) $$invalidate(0, current = $$props.current);
+    		if ('params' in $$props) $$invalidate(1, params = $$props.params);
+    	};
+
+    	if ($$props && "$$inject" in $$props) {
+    		$$self.$inject_state($$props.$$inject);
+    	}
+
+    	return [current, params];
+    }
+
+    class App extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance, create_fragment, safe_not_equal, {});
+
+    		dispatch_dev("SvelteRegisterComponent", {
+    			component: this,
+    			tagName: "App",
+    			options,
+    			id: create_fragment.name
+    		});
+    	}
+    }
+
+    const app = new App({
+        target: document.body,
+    });
+
+    return app;
+
+})();
 //# sourceMappingURL=bundle.js.map

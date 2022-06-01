@@ -12,6 +12,7 @@
             - try out ice candidate queues (only if other suggestions dont work)
     */
 
+    import Button from "../components/Button/Button.svelte";
     import ButtonInput from "../components/ButtonInput/ButtonInput.svelte";
 
     export let params: { id: string };
@@ -32,8 +33,10 @@
     let hostname: string;
     const SignalRTC = async () => {
         /* const hostname = window.location.hostname; */
-        const hostname = window.location.host;
+        /* const hostname = window.location.host; */
         /* hostname = '0.0.0.0:3000'; */
+        hostname = '192.168.2.249:3000';
+        /* hostname = '127.0.0.1:3000'; */
         let ws = new WebSocket(`ws://${hostname}/ws/${id}`);
         ws.onmessage = (ev) => onsignal(ev.data);
         ws.onclose = () => wsStatus = 'closed';
@@ -57,37 +60,41 @@
         datac = pc.createDataChannel('dataChan', { negotiated: true, id: 0, ordered: true });
         datac.binaryType = "arraybuffer";
 
-        let data: Blob[] = [];
-        let filename: string = "";
-        let size = 0;
-        datac.onmessage = (ev) => {
+        let data: ArrayBuffer[] = [];
+        let receivedBytes = 0;
+        let fileInfo: UploadInfo;
+        datac.onmessage = (ev: MessageEvent<string | ArrayBuffer>) => {
             console.log('recieved:', ev.data);
             
             if (typeof ev.data == "string") {
-                if (ev.data.startsWith("filename:")) {
-                    filename = ev.data.slice("filename:".length);
+                let info: UploadInfo | UploadTerm = JSON.parse(ev.data);
+                if ((info as UploadInfo)?.filename !== undefined) {
+                    fileInfo = info as UploadInfo;
                     data = [];
-                    size = 0;
+                    receivedBytes = 0;
+                    downloadProg = 0;
                 }
-                else if (ev.data == "done") {
-                    const received = new Blob(data);
-                    console.log(size);
-                    console.log("blog len", received.size);
-                    downloadAnchor.href = URL.createObjectURL(received);
-                    downloadAnchor.download = filename;
+                else {
+                    let uploadTerm = info as UploadTerm;
+                    if (uploadTerm.done) {
+                        const received = new Blob(data, { type: fileInfo.mime });
+                        console.log("blob len", received.size);
+                        downloadAnchor.href = URL.createObjectURL(received);
+                        downloadAnchor.download = fileInfo.filename;
 
-                    downloadAnchor.click();
+                        downloadAnchor.click();
+                    }
                 }
             }
             else {
-                size += ev.data.byteLength;
-                data.push(new Blob([ev.data]));
+                receivedBytes += ev.data.byteLength;
+                console.log(receivedBytes)
+                data.push(ev.data);
+                if (fileInfo.size != 0) {
+                    downloadProg = receivedBytes / fileInfo.size;
+                    console.log(downloadProg)
+                }
             }
-
-            /* while (received.length > 5) { */
-                /* received.shift(); */
-            /* } */
-            /* received = [...received, ev.data]; */
         };
 
 
@@ -203,15 +210,32 @@
     };
 
     SignalRTC();
+    
+    interface UploadInfo {
+        filename: string,
+        size: number,
+        mime: string
+    }
+    interface UploadTerm {
+        done: boolean,
+        error: boolean
+    }
 
     const chunkSize = 16 * 1024;
     let msgContent: string;
     const sendMsg = async () => {
         if (datac?.readyState == 'open') {
             var file: File = files[0];
-            datac.send(`filename:${file.name}`);
 
-            console.log(file.size);
+            uploadedBytes = 0;
+            uploadProg = 0;
+
+            let uploadInfo: UploadInfo = {
+                filename: file.name,
+                size: file.size,
+                mime: file.type
+            };
+            datac.send(JSON.stringify(uploadInfo));
 
             let start: number = 0;
             let end: number = 0;
@@ -223,13 +247,16 @@
             }
             end = file.size;
             await send(start, end, file);
-            datac.send("done");
+
+            let uploadTerm: UploadTerm = { done: true, error: false };
+            datac.send(JSON.stringify(uploadTerm));
             
             /* datac.send(msgContent); */
             msgContent = '';
         }
     };
 
+    let uploadedBytes = 0;
     const send = async (start: number, end: number, file: File) => {
         if (datac.bufferedAmount > datac.bufferedAmountLowThreshold) {
             await new Promise<void>((resolve, _) => {
@@ -242,28 +269,76 @@
 
         let data = await file.slice(start, end).arrayBuffer()
         datac.send(data);
+        uploadedBytes += data.byteLength;
+        uploadProg = uploadedBytes / file.size;
     }
 
     let files: FileList;
     let downloadAnchor: any;
+
+    let uploadProg: number = 0;
+    let downloadProg: number = 0;
 </script>
 
 <main>
     <h1>Room {id}</h1>
+
+<!--
     <p>ws: {wsStatus}</p>
     <p>rtc: {rtcStatus}</p>
     <p>ice: {iceConnState}</p>
+-->
 
-    <ButtonInput bind:value={msgContent} placeholder="Send message" on:click={sendMsg} />
-    <p on:click={connect} style="cursor:pointer;">connect</p>
+    {#if rtcStatus != 'connected'}
+        <Button on:click={connect}>Connect</Button>
+    {/if}
 
-    <p>{hostname}</p>
-    <input type="file" bind:files>
-    <a bind:this={downloadAnchor} href="/#">download</a>
 
-    <div>
-        {#each received as msg}
-            <p>{msg}</p>
-        {/each}
+    <ButtonInput hidden={rtcStatus !== 'connected'} bind:value={msgContent} placeholder="Send message" on:click={sendMsg} />
+
+    <input hidden={rtcStatus !== 'connected'} type="file" bind:files>
+
+    <div style="display:{rtcStatus !== 'connected' ? 'none': 'flex'}; flex-direction:column;">
+        <progress value={uploadProg} max="1">{uploadProg}%</progress>
+        <progress value={downloadProg} max="1">{downloadProg}%</progress>
     </div>
+    <a hidden bind:this={downloadAnchor} href="/#">download</a>
+
 </main>
+<div id="status">
+    <p>ws</p>
+    <span class="status-dot {wsStatus == 'connected' ? 'green' : 'red'}"></span>
+
+    <p>rtc</p>
+    <span class="status-dot {rtcStatus == 'connected' ? 'green' : rtcStatus == 'connecting' ? 'yellow' : 'red'}"></span>
+</div>
+
+<style>
+    .status-dot {
+        margin-left: 0.25rem;
+        margin-right: 0.75em;
+
+        height: 0.5rem;
+        width: 0.5rem;
+        border-radius: 50%;
+        display: inline-block;
+    }
+
+    .status-dot.green {
+        background-color: #00CA4E;
+    }
+    .status-dot.yellow {
+        background-color: #FFBD44;
+    }
+    .status-dot.red {
+        background-color: #FF605C;
+    }
+
+    #status {
+        position: fixed;
+        bottom: 0.5em;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+</style>

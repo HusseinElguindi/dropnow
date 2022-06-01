@@ -1,4 +1,5 @@
 <script lang="ts">
+    export let hidden: boolean = false;
     export let placeholder: string = "";
     export let value: string = "";
 
@@ -7,7 +8,7 @@
 
 </script>
 
-<main class="wrapper" class:focused>
+<main class="wrapper" class:focused style="{hidden ? 'display:none;' : ''}">
     <input bind:value={value} placeholder={placeholder} spellcheck="false" on:focus={()=>{setFocus(true)}} on:blur={()=>setFocus(false)}/>
     <div class="btn-wrapper">
         <div class="input-btn" on:click>
