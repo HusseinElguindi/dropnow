@@ -1,63 +1,31 @@
 <script lang="ts">
     'use-strict';
 
-    /*
-        TODO
-            - refactor to classes
-            - make one person the caller, and the other a callee
-                - would have to use the signalling websocket to inform that a peer joined
-            - 2 versions of this webpage, one is a caller, the other is a callee
-                - or a button to start/reset the connection
-                - or a negotiation is only started if there is another peer in the room
-            - try out ice candidate queues (only if other suggestions dont work)
-    */
-
     import Button from "../components/Button/Button.svelte";
     import ButtonInput from "../components/ButtonInput/ButtonInput.svelte";
+    import { SignalChannel } from '../signal';
+    import { PeerConnection } from '../webrtc';
 
-    export let params: { id: string };
-    const { id } = params;
+    export let params: { id: string, polite: boolean };
+    const { id, polite } = params;
 
-    let wsStatus: 'connected' | 'closed';
-
-    let pc: RTCPeerConnection;
+    let sc: SignalChannel;
+    let pc: PeerConnection;
     let rtcStatus: RTCPeerConnectionState;
-    let iceConnState: RTCIceConnectionState;
 
     let datac: RTCDataChannel;
 
-    let received: string[] = [];
-
     let connect = () => {};
 
-    /* let hostname: string; */
     const SignalRTC = async () => {
         const hostname = window.location.hostname + ":3000";
-        /* const hostname = window.location.host; */
-        /* hostname = '0.0.0.0:3000'; */
-        /* hostname = '192.168.2.249:3000'; */
-        /* hostname = '127.0.0.1:3000'; */
-        let ws = new WebSocket(`ws://${hostname}/ws/${id}`);
-        ws.onmessage = (ev) => onsignal(ev.data);
-        ws.onclose = () => wsStatus = 'closed';
-        ws.onerror = (err) => console.log(err);
+        sc = new SignalChannel();
+        await sc.connect(`ws://${hostname}/ws/${id}`);
+        sc.ws.onerror = (err) => console.log(err);
 
-        // Wait until websocket connects
-        await new Promise<void>((resolve, _) => ws.onopen = () => {
-            wsStatus = 'connected';
-            resolve();
-        });
-        console.log()
-
-        const config: RTCConfiguration = {
-            iceServers: [{
-                    /* urls: ['stun:stun.l.google.com:19302', 'stun:stun.l.google.com:19302', 'stun:stun1.l.google.com:19302', 'stun:stun2.l.google.com:19302'] */
-                    urls: ['stun:stun1.l.google.com:19302', 'stun:stun2.l.google.com:19302']
-                },
-            ]
-        };
-        pc = new RTCPeerConnection(config);
-        datac = pc.createDataChannel('dataChan', { negotiated: true, id: 0, ordered: true });
+        console.log({polite});
+        pc = new PeerConnection(sc, polite);
+        datac = pc.pc.createDataChannel('dataChan', { negotiated: true, id: 0, ordered: true });
         datac.binaryType = "arraybuffer";
 
         let data: ArrayBuffer[] = [];
@@ -107,106 +75,28 @@
         // }
 
 
-        // Signal message interface
-        interface Signal {
-            type: 'sdp' | 'ice-candidate',
-            data: object
-        };
-        // Send a signal to websocket as JSON
-        const sendSignal = (signal: Signal) => ws?.send(JSON.stringify(signal));
-
-
         // Register RTC events
-        pc.onconnectionstatechange = () => {
-            rtcStatus = pc.connectionState;
-            if (pc.connectionState === 'connected') {
+        pc.pc.onconnectionstatechange = () => {
+            rtcStatus = pc.pc.connectionState;
+            if (pc.pc.connectionState === 'connected') {
                 console.log('connected!');
             }
         }
-        pc.onicecandidate = (ev) => sendICECandidate(ev);
-        /* pc.onnegotiationneeded = () => negotiate(); */
-        pc.oniceconnectionstatechange = () => iceStateChange();
-        pc.onsignalingstatechange = () => signalStateChange();
-        pc.onicegatheringstatechange = () => console.log(pc.iceGatheringState)
 
-        console.log(pc);
-        for (let key in pc) {
-            if (/^on/.test(key)) {
-                pc.addEventListener(key.slice(2), (ev) => console.log(key, ev));
-            }
-        };
+        /* const iceStateChange = () => { */
+            /* iceConnState = pc.iceConnectionState; */
+            /* switch (pc.pc.iceConnectionState) { */
+                /* case 'closed': */
+                /* case 'failed': */
+                    /* pc.pc.restartIce(); */
+                    /* // TODO: ask user to retry */
+                    /* // close the connection */
+                    /* break; */
+            /* } */
+        /* }; */
 
-        // Start negotiation, create an offer and send an SDP signal
-        const negotiate = async () => {
-            console.log('negotiate');
-            // TODO: i think this is redundant
-            // let offerOpts: RTCOfferOptions = {
-            //     offerToReceiveAudio: true,
-            //     offerToReceiveVideo: true
-            // }
-            const offer = await pc.createOffer();
-            await pc.setLocalDescription(new RTCSessionDescription(offer));
-
-            sendSignal({ type: 'sdp', data: offer });
-        };
-        connect = negotiate;
-
-        // Send an ICE candidate to remote client
-        const sendICECandidate = (ev: RTCPeerConnectionIceEvent) => {
-            if (ev.candidate) sendSignal({ type: 'ice-candidate', data: ev.candidate });
-        };
-
-        const iceStateChange = () => {
-            iceConnState = pc.iceConnectionState;
-            switch (pc.iceConnectionState) {
-                case 'closed':
-                case 'failed':
-                    pc.restartIce();
-                    // TODO: ask user to retry
-                    // close the connection
-                    break;
-            }
-        };
-        // Same as iceStateChange
-        const signalStateChange = () => {
-            switch (pc.signalingState) {
-                case 'closed':
-                    // TODO: ask user to retry
-                    // close the connection
-                    break;
-            }
-        };
-
-        const onsignal = async (msg: string) => {
-            console.log(msg)
-            const signal: Signal = JSON.parse(msg);
-            switch (signal?.type) {
-                case 'sdp':
-                    await onsdp(signal.data as RTCSessionDescriptionInit);
-                    break;
-                case 'ice-candidate':
-                    await pc.addIceCandidate(signal.data);
-                    break;
-            }
-        }
-
-        // Update local and remote client descriptions. If an offer is sent, respond with an offer
-        const onsdp = async (sdp: RTCSessionDescriptionInit) => {
-            switch (sdp.type) {
-                case 'offer':
-                    await pc.setRemoteDescription(new RTCSessionDescription(sdp));
-                    const answer = await pc.createAnswer();
-                    await pc.setLocalDescription(answer);
-
-                    sendSignal({ type: 'sdp', data: answer });
-                    break;
-                case 'answer':
-                    await pc.setRemoteDescription(new RTCSessionDescription(sdp));
-                    break;
-            }
-        };
-
-        /* negotiate(); */
+        console.log(pc.state);
+        connect = () => { pc.negotiate(pc) };
     };
 
     SignalRTC();
@@ -308,7 +198,7 @@
 </main>
 <div id="status">
     <p>ws</p>
-    <span class="status-dot {wsStatus == 'connected' ? 'green' : 'red'}"></span>
+    <span class="status-dot {sc.status == 'connected' ? 'green' : 'red'}"></span>
 
     <p>rtc</p>
     <span class="status-dot {rtcStatus == 'connected' ? 'green' : rtcStatus == 'connecting' ? 'yellow' : 'red'}"></span>
