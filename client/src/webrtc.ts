@@ -11,34 +11,20 @@ export class PeerConnection {
         isSettingRemoteAnswerPending: boolean
     };
 
-    async negotiate(that: PeerConnection) {
-        console.log(that.state);
+    async negotiate() { 
         try {
-            that.state.makingOffer = true;
-            await that.pc.setLocalDescription();
-            that.signalChannel.send({ type: 'sdp', data: that.pc.localDescription });
+            this.state.makingOffer = true;
+            await this.pc.setLocalDescription();
+            this.signalChannel.send({ type: 'sdp', data: this.pc.localDescription });
         }
         catch (err) {
             console.error(err);
         }
         finally {
-            that.state.makingOffer = false;
+            this.state.makingOffer = false;
         }
-        
-        // temp
-        this.pc.onnegotiationneeded = async () => {
-            try {
-                that.state.makingOffer = true;
-                await that.pc.setLocalDescription();
-                that.signalChannel.send({ type: 'sdp', data: that.pc.localDescription });
-            }
-            catch (err) {
-                console.error(err);
-            }
-            finally {
-                that.state.makingOffer = false;
-            }
-        };
+
+        this.pc.onnegotiationneeded = this.negotiate;
     }
 
     constructor(sc: SignalChannel, polite: boolean) {
@@ -52,14 +38,12 @@ export class PeerConnection {
         };
         this.pc = new RTCPeerConnection(configuration);
 
-        console.log(this.state);
         // Keep track of some negotiation state to prevent races and errors
         this.state = {
             makingOffer: false,
             ignoreOffer: false,
             isSettingRemoteAnswerPending: false
         };
-        console.log(this.state);
 
         // Send any ice candidates to the other peer
         this.pc.onicecandidate = ({ candidate }) => this.signalChannel.send({ 
@@ -67,24 +51,8 @@ export class PeerConnection {
             data: candidate 
         });
 
-        // Let the "negotiationneeded" event trigger offer generation
-        // this.pc.onnegotiationneeded = async () => {
-            // try {
-                // this.state.makingOffer = true;
-                // await this.pc.setLocalDescription();
-                // this.signalChannel.send({ type: 'sdp', data: this.pc.localDescription });
-            // }
-            // catch (err) {
-                // console.error(err);
-            // }
-            // finally {
-                // this.state.makingOffer = false;
-            // }
-        // };
+        // this.negotiate();
 
-        // this.pc.onnegotiationneeded = this.negotiate;
-
-        // this.signalChannel.onmessage = async ({data: {description, candidate}}) => {
         this.signalChannel.onsignal = async ({ type, data }) => {
             try {
                 if (type == 'sdp') {
@@ -122,5 +90,4 @@ export class PeerConnection {
             }
         }
     }
-
 }

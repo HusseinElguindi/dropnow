@@ -4,7 +4,6 @@
     import Home from './pages/Home.svelte';
 
     import Room from './pages/Room.svelte';
-    import Room2 from './pages/Room2.svelte';
     import NotFound from './pages/NotFound.svelte';
 
     let current;
@@ -14,16 +13,6 @@
         params = ctx.params;
         next();
     }, () => current = Room);
-    page('/room-polite/:id', (ctx, next) => {
-        params = ctx.params;
-        params['polite'] = true;
-        next();
-    }, () => current = Room2);
-    page('/room-impolite/:id', (ctx, next) => {
-        params = ctx.params;
-        params['polite'] = false;
-        next();
-    }, () => current = Room2);
     page('*', () => current = NotFound);
 
     page.start();

@@ -16,7 +16,14 @@ var limc = make(chan struct{}, 1)
 
 type User struct {
 	*websocket.Conn
-	pair *User
+	polite bool
+	pair   *User
+}
+
+// RoomInfo models an update package for a user in a room
+type RoomInfo struct {
+	Polite  bool `json:"polite"`   // is the user polite?
+	HasPair bool `json:"has_pair"` // does the user have a connected pair in the room?
 }
 
 func main() {
@@ -28,20 +35,6 @@ func main() {
 		if !websocket.IsWebSocketUpgrade(c) {
 			return fiber.ErrUpgradeRequired
 		}
-
-		/*
-		   // Get the room ID
-		   id := c.Params("id")
-
-		   // Try to reserve a nil connection spot in the room
-		   user, ok := connectToRoom(id, nil)
-		   // Don't allow a connection if the room is full
-		   if !ok {
-		       return fiber.ErrForbidden
-		   }
-		   // Pass the reserved nil connection spot to be updated with the websocket connection
-		   c.Locals("user", user)
-		*/
 
 		return c.Next()
 	})
@@ -58,13 +51,14 @@ func main() {
 			return
 		}
 
-		// Get the reserved user spot
-		// user := c.Locals("user").(*User)
-		// Update the nil connection with the current websocket connection
-		// user.Conn = c
-
 		// Disconnect from room when connection is closed
 		defer disconnectFromRoom(id, c)
+
+		// Send the new user about the room information
+		roomInfo := RoomInfo{Polite: user.polite, HasPair: user.pair != nil}
+		if err := user.WriteJSON(roomInfo); err != nil {
+			return
+		}
 
 		var (
 			mt  int
@@ -108,10 +102,13 @@ func connectToRoom(id string, c *websocket.Conn) (*User, bool) {
 	user, ok := rooms[id]
 	var newUser *User
 	if !ok || user == nil {
-		newUser = &User{c, nil}
+		// Room does not exist or exists and is empty
+		newUser = &User{c, true, nil}
 		rooms[id] = newUser
 	} else if user.pair == nil {
-		newUser = &User{c, user}
+		// A user is waiting alone in the room
+		// If pair is polite then be impolite, and vice versa
+		newUser = &User{c, !user.polite, user}
 		user.pair = newUser
 	} else {
 		// Room is full
