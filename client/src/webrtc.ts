@@ -2,7 +2,7 @@ import type { SignalChannel } from './signal';
 
 export class PeerConnection {
     signalChannel: SignalChannel;
-    pc: RTCPeerConnection;
+    conn: RTCPeerConnection;
 
     polite: boolean;
     state: {
@@ -11,34 +11,20 @@ export class PeerConnection {
         isSettingRemoteAnswerPending: boolean
     };
 
-    async negotiate(that: PeerConnection) {
-        console.log(that.state);
+    async negotiate() { 
         try {
-            that.state.makingOffer = true;
-            await that.pc.setLocalDescription();
-            that.signalChannel.send({ type: 'sdp', data: that.pc.localDescription });
+            this.state.makingOffer = true;
+            await this.conn.setLocalDescription();
+            this.signalChannel.send({ type: 'sdp', data: this.conn.localDescription });
         }
         catch (err) {
             console.error(err);
         }
         finally {
-            that.state.makingOffer = false;
+            this.state.makingOffer = false;
         }
-        
-        // temp
-        this.pc.onnegotiationneeded = async () => {
-            try {
-                that.state.makingOffer = true;
-                await that.pc.setLocalDescription();
-                that.signalChannel.send({ type: 'sdp', data: that.pc.localDescription });
-            }
-            catch (err) {
-                console.error(err);
-            }
-            finally {
-                that.state.makingOffer = false;
-            }
-        };
+
+        this.conn.onnegotiationneeded = this.negotiate;
     }
 
     constructor(sc: SignalChannel, polite: boolean) {
@@ -50,41 +36,23 @@ export class PeerConnection {
                 urls: ['stun:stun1.l.google.com:19302', 'stun:stun2.l.google.com:19302'] 
             }] 
         };
-        this.pc = new RTCPeerConnection(configuration);
+        this.conn = new RTCPeerConnection(configuration);
 
-        console.log(this.state);
         // Keep track of some negotiation state to prevent races and errors
         this.state = {
             makingOffer: false,
             ignoreOffer: false,
             isSettingRemoteAnswerPending: false
         };
-        console.log(this.state);
 
         // Send any ice candidates to the other peer
-        this.pc.onicecandidate = ({ candidate }) => this.signalChannel.send({ 
+        this.conn.onicecandidate = ({ candidate }) => this.signalChannel.send({ 
             type: 'ice-candidate', 
             data: candidate 
         });
 
-        // Let the "negotiationneeded" event trigger offer generation
-        // this.pc.onnegotiationneeded = async () => {
-            // try {
-                // this.state.makingOffer = true;
-                // await this.pc.setLocalDescription();
-                // this.signalChannel.send({ type: 'sdp', data: this.pc.localDescription });
-            // }
-            // catch (err) {
-                // console.error(err);
-            // }
-            // finally {
-                // this.state.makingOffer = false;
-            // }
-        // };
+        // this.negotiate();
 
-        // this.pc.onnegotiationneeded = this.negotiate;
-
-        // this.signalChannel.onmessage = async ({data: {description, candidate}}) => {
         this.signalChannel.onsignal = async ({ type, data }) => {
             try {
                 if (type == 'sdp') {
@@ -92,7 +60,7 @@ export class PeerConnection {
                     // An offer may come in while we are busy processing SRD(answer).
                     // In this case, we will be in "stable" by the time the offer is processed
                     // so it is safe to chain it on our Operations Chain now.
-                    const readyForOffer = !this.state.makingOffer && (this.pc.signalingState == "stable" || this.state.isSettingRemoteAnswerPending);
+                    const readyForOffer = !this.state.makingOffer && (this.conn.signalingState == "stable" || this.state.isSettingRemoteAnswerPending);
                     const offerCollision = description.type == "offer" && !readyForOffer;
 
                     this.state.ignoreOffer = !this.polite && offerCollision;
@@ -100,17 +68,17 @@ export class PeerConnection {
                         return;
                     }
                     this.state.isSettingRemoteAnswerPending = description.type == "answer";
-                    await this.pc.setRemoteDescription(description); // SRD rolls back as needed
+                    await this.conn.setRemoteDescription(description); // SRD rolls back as needed
                     this.state.isSettingRemoteAnswerPending = false;
                     if (description.type == "offer") {
-                        await this.pc.setLocalDescription();
-                        this.signalChannel.send({ type: 'sdp', data: this.pc.localDescription });
+                        await this.conn.setLocalDescription();
+                        this.signalChannel.send({ type: 'sdp', data: this.conn.localDescription });
                     }
                 }
                 else if (type == 'ice-candidate') {
                     let candidate = data as RTCIceCandidate;
                     try {
-                        await this.pc.addIceCandidate(candidate);
+                        await this.conn.addIceCandidate(candidate);
                     }
                     catch (err) {
                         if (!this.state.ignoreOffer) throw err; // Suppress ignored offer's candidates
@@ -122,5 +90,4 @@ export class PeerConnection {
             }
         }
     }
-
 }
