@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"sync/atomic"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/websocket/v2"
@@ -12,12 +13,13 @@ import (
 // TODO: Try using Redis with TTL
 
 var rooms = make(map[string]*User)
-var limc = make(chan struct{}, 1)
+var limc = make(chan struct{}, 1) // allow only one room operation at a time
 
+// TODO: mutex per room instead of single channel (would allow parallel updates to different rooms)
 type User struct {
 	*websocket.Conn
-	polite bool
-	pair   *User
+	polite atomic.Bool
+	pair   atomic.Pointer[User]
 }
 
 // RoomInfo models an update package for a user in a room
@@ -46,16 +48,16 @@ func main() {
 		// Get the room ID
 		id := c.Params("id")
 
+		// Connect to room with the given ID
 		user, ok := connectToRoom(id, c)
 		if !ok {
 			return
 		}
-
 		// Disconnect from room when connection is closed
 		defer disconnectFromRoom(id, c)
 
 		// Send the new user about the room information
-		roomInfo := RoomInfo{Polite: user.polite, HasPair: user.pair != nil}
+		roomInfo := RoomInfo{Polite: user.polite.Load(), HasPair: user.pair.Load() != nil}
 		if err := user.WriteJSON(roomInfo); err != nil {
 			return
 		}
@@ -68,17 +70,18 @@ func main() {
 		for {
 			// Read incoming messages
 			if mt, msg, err = c.ReadMessage(); err != nil {
-				log.Println("read:", err)
+				log.Println("read error:", err)
 				break
 			}
-			fmt.Println(string(msg))
+
+			pair := user.pair.Load()
 			// If no other user or a reserved user (nil connection) is connected, disregard the message
-			if user.pair == nil { //|| user.pair.Conn == nil {
+			if pair == nil { //|| user.pair.Conn == nil {
 				continue
 			}
 			// Send the message to the other user
-			if err = user.pair.WriteMessage(mt, msg); err != nil {
-				log.Println("write:", err)
+			if err = pair.WriteMessage(mt, msg); err != nil {
+				log.Println("write error:", err)
 				break
 			}
 		}
@@ -103,13 +106,17 @@ func connectToRoom(id string, c *websocket.Conn) (*User, bool) {
 	var newUser *User
 	if !ok || user == nil {
 		// Room does not exist or exists and is empty
-		newUser = &User{c, true, nil}
+		newUser = &User{c, atomic.Bool{}, atomic.Pointer[User]{}}
+		newUser.polite.Store(true)
+		newUser.pair.Store(nil)
 		rooms[id] = newUser
-	} else if user.pair == nil {
+	} else if user.pair.Load() == nil {
 		// A user is waiting alone in the room
 		// If pair is polite then be impolite, and vice versa
-		newUser = &User{c, !user.polite, user}
-		user.pair = newUser
+		newUser = &User{c, atomic.Bool{}, atomic.Pointer[User]{}}
+		newUser.polite.Store(!user.polite.Load())
+		newUser.pair.Store(user)
+		user.pair.Store(newUser)
 	} else {
 		// Room is full
 		return nil, false
@@ -128,19 +135,18 @@ func disconnectFromRoom(id string, c *websocket.Conn) {
 		return
 	}
 
-	if user.Conn == c {
-		// user := user
-		pair := user.pair
+	pair := user.pair.Load()
 
+	if user.Conn == c {
 		if pair != nil {
-			pair.pair = nil
+			pair.pair.Store(nil)
 		}
 
-		user.pair = nil
+		user.pair.Store(nil)
 		rooms[id] = pair
-	} else if user.pair != nil && user.pair.Conn == c {
-		user.pair.pair = nil
-		user.pair = nil
+	} else if pair != nil && pair.Conn == c {
+		pair.pair.Store(nil)
+		user.pair.Store(nil)
 	} else {
 		fmt.Println("what (disconnect)?")
 	}

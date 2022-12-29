@@ -15,22 +15,25 @@
     let datac: RTCDataChannel;
 
     const SignalRTC = async () => {
-        const hostname = window.location.hostname + ":3000";
+        const host = window.location.host;
+        const wsProtocol = (window.location.protocol === 'https:') ? 'wss:' : 'ws:';
+        console.log({ wsProtocol, hostname: host });
+
         sc = new SignalChannel();
 
-        let roomInfo = await sc.connect(`ws://${hostname}/ws/${id}`);
+        let roomInfo = await sc.connect(`${wsProtocol}//${host}/ws/${id}`);
         sc.ws.onerror = (err) => console.log(err);
 
         pc = new PeerConnection(sc, roomInfo?.polite);
 
-        datac = pc.pc.createDataChannel('dataChan', { negotiated: true, id: 0, ordered: true });
-        datac.binaryType = "arraybuffer";
+        datac = pc.conn.createDataChannel('dataChan', { negotiated: true, id: 0, ordered: true });
+        datac.binaryType = 'arraybuffer';
 
         let data: ArrayBuffer[] = [];
         let receivedBytes = 0;
         let fileInfo: UploadInfo;
         datac.onmessage = (ev: MessageEvent<string | ArrayBuffer>) => {
-            console.log('recieved:', ev.data);
+            // console.log('recieved:', ev.data);
             
             if (typeof ev.data == "string") {
                 let info: UploadInfo | UploadTerm = JSON.parse(ev.data);
@@ -54,7 +57,6 @@
             }
             else {
                 receivedBytes += ev.data.byteLength;
-                console.log(receivedBytes)
                 data.push(ev.data);
                 if (fileInfo.size != 0) {
                     downloadProg = receivedBytes / fileInfo.size;
@@ -64,19 +66,19 @@
         };
 
         // Register RTC events
-        pc.pc.onconnectionstatechange = () => {
-            rtcStatus = pc.pc.connectionState;
-            if (pc.pc.connectionState === 'connected') {
+        pc.conn.onconnectionstatechange = () => {
+            rtcStatus = pc.conn.connectionState;
+            if (pc.conn.connectionState === 'connected') {
                 console.log('connected!');
             }
         }
 
         // TODO: TEST THIS
-        pc.pc.oniceconnectionstatechange = () => {
-            switch (pc.pc.iceConnectionState) {
+        pc.conn.oniceconnectionstatechange = () => {
+            switch (pc.conn.iceConnectionState) {
                 case 'closed':
                 case 'failed':
-                    pc.pc.restartIce();
+                    pc.conn.restartIce();
                     // TODO: ask user to retry
                     // close the connection
                     break;
@@ -102,10 +104,8 @@
 
     const chunkSize = 64 * 1024;
     const sendMsg = async () => {
-        console.log("here");
         if (datac?.readyState == 'open') {
-        console.log("here2");
-            var file: File = files[0];
+            var file: File = files[0]; // TODO: support multiple files
 
             uploadedBytes = 0;
             uploadProg = 0;
