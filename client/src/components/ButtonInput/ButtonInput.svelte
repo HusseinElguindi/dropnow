@@ -69,7 +69,7 @@
     svg:hover {
         filter: brightness(150%);
 
-        /* Safari blur bug fix */
+        /* Retina Display fuzzy image bug fix */
         transform: translateZ(0);
         -webkit-transform: translateZ(0);
     }
