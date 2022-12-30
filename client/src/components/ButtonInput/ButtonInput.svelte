@@ -5,8 +5,7 @@
 </script>
 
 <form on:submit|preventDefault style="{hidden ? 'display:none;' : ''}">
-    <!-- svelte-ignore a11y-autofocus -->
-    <input bind:value={value} placeholder={placeholder} autofocus />
+    <input bind:value={value} placeholder={placeholder}/>
     <button>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right">
             <line x1="5" y1="12" x2="19" y2="12"/>
@@ -27,16 +26,17 @@
         border-radius: var(--border-radius);
         background: transparent;
         width: fit-content;
+        height: 2.9rem;
 
         transition: all 200ms ease-in-out;
     }
 
     input {
-        flex: 2;
+        flex: 2; /* take up as much space as possible */
         border: none;
         background: transparent;
         color: var(--font-primary);
-        padding: 10px;
+        padding: 0 10px;
         width: 150px;
         font-size: 16px;
 
@@ -69,7 +69,10 @@
     svg:hover {
         filter: brightness(150%);
 
-        /* Retina Display fuzzy image bug fix */
+        /* 
+        Retina Display fuzzy image bug fix.
+        https://stackoverflow.com/questions/13347947/css-filter-on-retina-display-fuzzy-images
+        */
         transform: translateZ(0);
         -webkit-transform: translateZ(0);
     }
