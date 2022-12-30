@@ -11,21 +11,20 @@
     <title>DropNow</title>
 </svelte:head>
 
-<section>
+<div>
     <h1>DropNow</h1>
-    <ButtonInput placeholder="Room ID" bind:value={roomID} on:click={joinRoom}/>
-</section>
+    <ButtonInput placeholder="Room ID" bind:value={roomID} on:submit={joinRoom} />
+</div>
 
 <style>
-    section {
+    div {
         justify-content: center;
         align-self: center;
         width: fit-content;
         padding: 20px;
     }
 
-    section > h1 {
-        font-size: 25px;
+    div > h1 {
         padding-bottom: 10px;
     }
 </style>
