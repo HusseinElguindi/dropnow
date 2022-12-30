@@ -42,6 +42,10 @@
         padding: 0;
     }
 
+    :global(html) {
+        height: -webkit-fill-available;
+    }
+
     :global(body) {
         display: flex;
         flex-direction: column;
@@ -52,6 +56,6 @@
         color: var(--font-primary);
 
         width: 100%;
-        height: 100vh;
+        min-height: -webkit-fill-available;
     }
 </style>
