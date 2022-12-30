@@ -4,7 +4,7 @@
 
     let roomID: string;
 
-    const joinRoom = () => page.redirect(`/room/${roomID}`);
+    const joinRoom = () => roomID && page.redirect(`/room/${roomID}`);
 </script>
 
 <svelte:head>
