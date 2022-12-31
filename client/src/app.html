@@ -15,7 +15,7 @@
         <style>
             @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
             :root {
-                font-size: 15px;
+                font-size: 16px;
                 --background-primary: #1d1e22;
                 --background-secondary: #404040;
                 --focused: #707070;
@@ -29,8 +29,10 @@
                 padding: 0;
             }
 
-            html {
+            html, body {
+                height: 100vh;
                 height: -webkit-fill-available;
+                height: -moz-available;
             }
 
             body {
@@ -43,7 +45,6 @@
                 color: var(--font-primary);
 
                 width: 100%;
-                min-height: -webkit-fill-available;
             }
         </style>
 
