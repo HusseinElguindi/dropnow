@@ -1,10 +1,7 @@
 <script lang="ts">
-    import page from 'page';
-    import ButtonInput from "../components/ButtonInput/ButtonInput.svelte";
+    import ButtonInput from "$lib/components/ButtonInput/ButtonInput.svelte";
 
     let roomID: string;
-
-    const joinRoom = () => roomID && page.redirect(`/room/${roomID}`);
 </script>
 
 <svelte:head>
@@ -13,7 +10,7 @@
 
 <div>
     <h1>DropNow</h1>
-    <ButtonInput placeholder="Room ID" bind:value={roomID} on:submit={joinRoom} />
+    <ButtonInput placeholder="Room ID" bind:value={roomID} action="{roomID ? `/room/${roomID}` : ''}" />
 </div>
 
 <style>
