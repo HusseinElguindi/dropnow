@@ -2,17 +2,18 @@
     export let hidden: boolean = false;
 </script>
 
-<main class="wrapper" on:click style="{hidden ? 'display:none;' : ''}">
+<button on:click style="{hidden ? 'display:none;' : ''}">
     <p><slot></slot></p>
     <div class="arrow">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
     </div>
-</main>
+</button>
 
 <style>
-    .wrapper {
+    button {
         --border-radius: 7px;
         --border-width: 1.5px;
+        background: transparent;
 
         width: fit-content;
         height: 2.65em;
@@ -29,12 +30,14 @@
         border-radius: var(--border-radius);
         outline: none;
 
-        transition: all 200ms ease-in-out;
-    }
-    .wrapper:hover {
-        --background-secondary: var(--focused);
-    }
+        color: var(--font-primary);
+        font-size: 1rem;
 
+        transition: border-color 200ms ease-in-out;
+    }
+    button:hover {
+        border: var(--border-width) solid var(--focused);
+    }
 
     .arrow {
         margin-left: 0.25em;
@@ -48,6 +51,5 @@
     .arrow > svg {
         width: 100%;
         height: 100%;
-        color: var(--focused);
     }
 </style>

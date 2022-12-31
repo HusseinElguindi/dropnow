@@ -2,9 +2,9 @@
     export let hidden: boolean = false;
 </script>
 
-<main class="wrapper" on:click style="{hidden ? 'display:none;' : ''}">
+<div class="wrapper" on:click style="{hidden ? 'display:none;' : ''}">
     <p><slot></slot></p>
-</main>
+</div>
 
 <style>
     .wrapper {
