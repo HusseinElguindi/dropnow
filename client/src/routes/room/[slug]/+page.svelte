@@ -1,6 +1,8 @@
 <script lang="ts">
     'use-strict';
 
+    import { dev } from '$app/environment';
+
     import SendButton from '$lib/components/SendButton/SendButton.svelte'
     import { SignalChannel } from '$lib/scripts/signal';
     import { PeerConnection } from '$lib/scripts/webrtc';
@@ -16,9 +18,9 @@
     let datac: RTCDataChannel;
 
     const SignalRTC = async () => {
-        const host = window.location.host;
+        const host = dev ? 'localhost:3000' : window.location.host;
         const wsProtocol = (window.location.protocol === 'https:') ? 'wss:' : 'ws:';
-        console.log({ wsProtocol, hostname: host });
+        console.log({ dev, wsProtocol, host });
 
         sc = new SignalChannel();
 
