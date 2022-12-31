@@ -1,12 +1,13 @@
 <script lang="ts">
     'use-strict';
 
-    import SendButton from "../components/SendButton/SendButton.svelte";
-    import { SignalChannel } from '../signal';
-    import { PeerConnection } from '../webrtc';
+    import SendButton from '$lib/components/SendButton/SendButton.svelte'
+    import { SignalChannel } from '$lib/scripts/signal';
+    import { PeerConnection } from '$lib/scripts/webrtc';
 
-    export let params: { id: string };
-    const { id } = params;
+    import type { PageData } from './$types';
+    export let data: PageData;
+    const id = data.slug;
 
     let sc: SignalChannel;
     let pc: PeerConnection;

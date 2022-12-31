@@ -2,11 +2,12 @@
     export let hidden: boolean = false;
     export let placeholder: string = "";
     export let value: string = "";
+    export let action: string = "";
 </script>
 
-<form on:submit|preventDefault style="{hidden ? 'display:none;' : ''}">
+<form action={action} style="{hidden ? 'display:none;' : ''}">
     <input bind:value={value} placeholder={placeholder}/>
-    <button>
+    <button disabled={action == ''}>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right">
             <line x1="5" y1="12" x2="19" y2="12"/>
             <polyline points="12 5 19 12 12 19"/>

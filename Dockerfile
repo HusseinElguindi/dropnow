@@ -52,7 +52,7 @@ WORKDIR /build
 
 # Move the frontend to the container to be served by the server
 # COPY client/public/ ../client/public/ # without node build step
-COPY --from=node_build_base /app/public ./client/public
+COPY --from=node_build_base /app/build ./client/public
 
 # Copy the built binary from the build image to this one
 COPY --from=go_build_base /build/out ./server/out
