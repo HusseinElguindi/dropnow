@@ -161,7 +161,7 @@
 </script>
 
 <main>
-    <h1>Room {id}</h1>
+    <h1>Room <span class="room-id">{id}</span></h1>
 
     {#if rtcStatus != 'connected'}
         {#if rtcStatus == 'connecting'}
@@ -171,10 +171,11 @@
         {/if}
     {/if}
 
-    <input hidden={rtcStatus !== 'connected'} type="file" bind:files>
+    <input id="file" hidden={rtcStatus !== 'connected'} type="file" bind:files>
+
     <SendButton hidden={rtcStatus !== 'connected'} on:click={sendMsg}>Send</SendButton>
 
-    <div style="display:{rtcStatus !== 'connected' ? 'none': 'flex'}; flex-direction:column;">
+    <div id="prog" style="display:{rtcStatus !== 'connected' ? 'none': 'flex'}; flex-direction:column;">
         <progress value={uploadProg} max="1">{uploadProg}%</progress>
         <progress value={downloadProg} max="1">{downloadProg}%</progress>
     </div>
@@ -182,14 +183,21 @@
 </main>
 
 <div id="status">
-    <p>ws</p>
+    <p>WS</p>
     <span class="status-dot {sc.status == 'connected' ? 'green' : 'red'}"></span>
 
-    <p>rtc</p>
+    <p>RTC</p>
     <span class="status-dot {rtcStatus == 'connected' ? 'green' : rtcStatus == 'connecting' ? 'yellow' : 'red'}"></span>
 </div>
 
 <style>
+    h1 span.room-id {
+        background: var(--background-secondary);
+        border-radius: 0.4rem;
+        padding: 0 5px;
+        font-size: 0.9em;
+    }
+    
     .status-dot {
         margin-left: 0.25rem;
         margin-right: 0.75em;
@@ -199,15 +207,12 @@
         border-radius: 50%;
         display: inline-block;
     }
+    .status-dot.green { background-color: #00CA4E; }
+    .status-dot.yellow { background-color: #FFBD44; }
+    .status-dot.red { background-color: #FF605C; }
 
-    .status-dot.green {
-        background-color: #00CA4E;
-    }
-    .status-dot.yellow {
-        background-color: #FFBD44;
-    }
-    .status-dot.red {
-        background-color: #FF605C;
+    input[type=file], #prog {
+        margin: 10px 0;
     }
 
     #status {
