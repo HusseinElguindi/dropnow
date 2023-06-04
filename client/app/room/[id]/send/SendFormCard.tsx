@@ -1,5 +1,5 @@
 import { Send } from "lucide-react"
-import { ChangeEvent, Ref, useState } from "react"
+import { ChangeEvent, useState } from "react"
 
 import {
   CardContent,
@@ -17,9 +17,7 @@ export default function SendFormCard({ onFileChange, onSendClick }: { onFileChan
     onFileChange && onFileChange(e)
   }
 
-  const [Clicked, setClicked] = useState(false);
   const onClick = () => {
-    setClicked(true) // temp
     onSendClick && onSendClick();
   }
 
@@ -31,8 +29,8 @@ export default function SendFormCard({ onFileChange, onSendClick }: { onFileChan
       </CardHeader>
       <CardContent className="space-y-3">
         <Input type="file" multiple={false} onChange={onChange} />
-        <Button className="w-full gap-1" onClick={onClick}>
-          {/*<Button className="w-full gap-1" disabled={!InFile} onClick={onClick}>*/}
+          {/*<Button className="w-full gap-1" onClick={onClick}>*/}
+          <Button className="w-full gap-1" disabled={!InFile} onClick={onClick}>
           <Send className="mr-2 h-3 w-3" />Send
         </Button>
       </CardContent>
