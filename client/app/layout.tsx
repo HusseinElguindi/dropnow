@@ -33,7 +33,14 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <>
       <html lang="en" suppressHydrationWarning>
-        <head />
+        <head>
+          <title>DropNow</title>
+          <meta property="og:title" content="DropNow" />
+          <meta property="og:description" content="Peer-to-peer, cross-platform file sharing." />
+          <meta property="og:image" content="https://dropnow.elguindi.xyz/banner.png" />
+          <meta property="og:image:width" content="1200" />
+          <meta property="og:image:height" content="600" />
+        </head>
         <body
           className={cn(
             "min-h-screen bg-background font-sans antialiased",
