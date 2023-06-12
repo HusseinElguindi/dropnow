@@ -3,7 +3,7 @@ interface Signal {
     data: object
 };
 
-interface RoomInfo {
+export interface RoomInfo {
     polite: boolean,
     has_pair: boolean
 }
@@ -16,10 +16,10 @@ export class SignalChannel {
     async connect(ws: string) {
         this.ws = new WebSocket(ws);
 
-        let roomInfo: RoomInfo;
-        await new Promise<void>((resolve, _) => this.ws.onopen = () => {
+        let roomInfo: RoomInfo = { polite: false, has_pair: false };
+        await new Promise<void>((resolve, _) => this.ws!.onopen = () => {
             this.status = 'connected';
-            this.ws.onmessage = ({ data }) => {
+            this.ws!.onmessage = ({ data }) => {
                 roomInfo = JSON.parse(data);
                 resolve();
             };
@@ -31,7 +31,6 @@ export class SignalChannel {
             this.onsignal && this.onsignal(signal);
         };
 
-        console.log(roomInfo);
         return roomInfo;
     }
 
