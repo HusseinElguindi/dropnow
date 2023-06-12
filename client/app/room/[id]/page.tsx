@@ -89,7 +89,7 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
   useEffect(() => {
     ; (async () => {
       const wsProtocol = (window.location.protocol === 'https:') ? 'wss:' : 'ws:';
-      const host = process.env.NODE_ENV == 'production' ? `${window.location.host}:3001` : 'localhost:3001';
+      const host = process.env.NODE_ENV == 'production' ? window.location.host : 'localhost:3001';
       const URL = `${wsProtocol}//${host}/ws/${id}`
       const { sc, roomInfo } = await createSignalChannel(URL)
       setSignalChannelStatus(sc.status) // TODO: better state system
