@@ -11,11 +11,11 @@ export class PeerConnection {
         isSettingRemoteAnswerPending: boolean
     };
 
-    async negotiate() { 
+    async negotiate() {
         try {
             this.state.makingOffer = true;
             await this.conn.setLocalDescription();
-            this.signalChannel.send({ type: 'sdp', data: this.conn.localDescription });
+            this.signalChannel.send({ type: 'sdp', data: this.conn.localDescription ?? {} });
         }
         catch (err) {
             console.error(err);
@@ -31,10 +31,10 @@ export class PeerConnection {
         this.signalChannel = sc;
         this.polite = polite;
 
-        const configuration = { 
-            iceServers: [{ 
-                urls: ['stun:stun1.l.google.com:19302', 'stun:stun2.l.google.com:19302'] 
-            }] 
+        const configuration = {
+            iceServers: [{
+                urls: ['stun:stun1.l.google.com:19302', 'stun:stun2.l.google.com:19302']
+            }]
         };
         this.conn = new RTCPeerConnection(configuration);
 
@@ -46,9 +46,9 @@ export class PeerConnection {
         };
 
         // Send any ice candidates to the other peer
-        this.conn.onicecandidate = ({ candidate }) => this.signalChannel.send({ 
-            type: 'ice-candidate', 
-            data: candidate 
+        this.conn.onicecandidate = ({ candidate }) => this.signalChannel.send({
+            type: 'ice-candidate',
+            data: candidate ?? {}
         });
 
         // this.negotiate();
@@ -72,7 +72,7 @@ export class PeerConnection {
                     this.state.isSettingRemoteAnswerPending = false;
                     if (description.type == "offer") {
                         await this.conn.setLocalDescription();
-                        this.signalChannel.send({ type: 'sdp', data: this.conn.localDescription });
+                        this.signalChannel.send({ type: 'sdp', data: this.conn.localDescription ?? {} });
                     }
                 }
                 else if (type == 'ice-candidate') {
@@ -84,7 +84,7 @@ export class PeerConnection {
                         if (!this.state.ignoreOffer) throw err; // Suppress ignored offer's candidates
                     }
                 }
-            } 
+            }
             catch (err) {
                 console.error(err);
             }

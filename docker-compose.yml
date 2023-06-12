@@ -1,6 +1,11 @@
 services:
-  server:
-    image: dropnow-server
-    build: .
+  client:
+    image: dropnow-client
+    build: ./client
     ports:
       - 3000:3000
+  server:
+    image: dropnow-server
+    build: ./server
+    ports:
+      - 3001:3000

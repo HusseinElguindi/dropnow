@@ -87,9 +87,6 @@ func main() {
 		}
 	}))
 
-	app.Static("/", "../client/public")
-	app.Static("/*", "../client/public/index.html")
-
 	log.Fatal(app.Listen(":3000"))
 }
 

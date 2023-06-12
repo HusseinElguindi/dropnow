@@ -2,7 +2,7 @@ name: DropNow CI
 
 on:
     push:
-        branches: [master]
+        branches: [react]
 
 jobs:
     deploy:
@@ -21,4 +21,7 @@ jobs:
                     cd ./dropnow
                     git checkout .
                     git pull
-                    docker compose up -d --no-deps --build
+                    git checkout react
+                    ls
+                    docker compose version
+                    docker compose -f ./docker-compose.yml up -d --no-deps --build
