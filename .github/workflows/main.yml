@@ -2,7 +2,7 @@ name: DropNow CI
 
 on:
     push:
-        branches: [master]
+        branches: [react]
 
 jobs:
     deploy:
