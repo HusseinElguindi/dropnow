@@ -21,4 +21,6 @@ jobs:
                     cd ./dropnow
                     git checkout .
                     git pull
-                    docker compose up -d --no-deps --build
+                    ls
+                    docker compose version
+                    docker compose -f ./docker-compose.yml up -d --no-deps --build
