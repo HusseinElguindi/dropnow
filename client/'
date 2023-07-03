@@ -1,0 +1,18 @@
+<div class="max-w-md mx-auto space-y-6">
+	<h1
+		class="text-4xl md:text-6xl leading-[1.15] md:leading-[1.15] tracking-tight text-center"
+	>
+		<span class="bg-gradient-to-r from-orange-400 to-rose-400 bg-clip-text text-transparent">
+			Modernized
+		</span>
+		<br />
+		File Sharing
+	</h1>
+
+	<p class="max-w-[700px] text-lg text-muted-foreground sm:text-xl">
+		Only peer-to-peer transfer connections; no intermediate server touches your data.
+	</p>
+	<div class="space-y-2">
+		<h1 class="text-base font-semibold">Create a room</h1>
+	</div>
+</div>
