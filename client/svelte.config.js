@@ -12,7 +12,9 @@ const config = {
 		adapter: adapter(),
 		alias: {
 			$components: 'src/lib/components',
-			'$components/*': 'src/lib/components/*'
+			'$components/*': 'src/lib/components/*',
+			$p2p: 'src/lib/p2p',
+			'$p2p/*': 'src/lib/p2p/*',
 		}
 	},
 	shadcn: {
