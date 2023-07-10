@@ -37,8 +37,7 @@
 	onMount(async () => {
 		const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
 		const host = !dev ? window.location.host : 'localhost:8000';
-		// const URL = `${wsProtocol}//${host}/ws/${roomID}`;
-		const URL = `wss://dropnow.elguindi.xyz/ws/${roomID}`;
+		const URL = `${wsProtocol}//${host}/ws/${roomID}`;
 
 		sc = new SignalChannel();
 		sc.onstatus = (status) => (scStatus = status);
