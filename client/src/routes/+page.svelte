@@ -33,12 +33,8 @@
 				on:keydown={handleKeydown}
 			/>
 			<Button disabled={!roomID} on:click={() => gotoRoom(roomID)}>Join</Button>
-			<Button
-				variant="outline"
-				class="backdrop-blur-[1px]"
-				on:click={() => roomID = uuidv4()}
-			>
-				<Shuffle class="w-4" strokeWidth={1.75}/>
+			<Button variant="outline" class="backdrop-blur-[1px]" on:click={() => (roomID = uuidv4())}>
+				<Shuffle class="w-4" strokeWidth={1.75} />
 			</Button>
 		</div>
 		<p class="text-muted-foreground text-sm">Enter an ID to join/create a room.</p>

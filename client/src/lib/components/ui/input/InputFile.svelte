@@ -4,6 +4,7 @@
 
 	let className: string | undefined | null = undefined;
 
+	export let multiple: HTMLInputAttributes['multiple'] = undefined;
 	export let value: HTMLInputAttributes['value'] = undefined;
 	export let files: HTMLInputAttributes['bind:files'] = undefined;
 	export { className as class };
@@ -16,6 +17,7 @@
 	)}
 	bind:value
 	type="file"
+	{multiple}
 	bind:files
 	on:blur
 	on:change

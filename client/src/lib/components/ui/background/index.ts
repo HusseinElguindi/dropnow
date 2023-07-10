@@ -1,1 +1,1 @@
-export { default as Background } from "./Background.svelte";
+export { default as Background } from './Background.svelte';

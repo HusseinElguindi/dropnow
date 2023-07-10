@@ -1,2 +1,2 @@
-export { SignalChannel } from "./signal";
-export { PeerConnection } from "./webrtc";
+export { SignalChannel } from './signal';
+export { PeerConnection } from './webrtc';
