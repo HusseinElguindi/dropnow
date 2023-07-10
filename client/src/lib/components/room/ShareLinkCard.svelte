@@ -3,7 +3,7 @@
 	import { Button } from '$components/ui/button';
 	import { Input } from '$components/ui/input';
 	import { onMount } from 'svelte';
-	import { Copy } from 'lucide-svelte';
+	import { Check, Copy } from 'lucide-svelte';
 
 	let displayURL: string;
 	let copyURL: string;
@@ -13,7 +13,14 @@
 		copyURL = `${window.location.origin}${window.location.pathname}`;
 	});
 
-	const handleCopyURL = () => navigator?.clipboard && navigator.clipboard.writeText(copyURL);
+	let checkmark = false;
+	const handleCopyURL = () => {
+		navigator?.clipboard && navigator.clipboard.writeText(copyURL);
+		checkmark = true;
+		setTimeout(() => {
+			checkmark = false;
+		}, 1000);
+	};
 </script>
 
 <Card>
@@ -24,7 +31,11 @@
 	<CardContent class="flex gap-2">
 		<Input class="focus-visible:ring-0" value={displayURL} readonly />
 		<Button variant="outline" class="p-3 h-10 w-10" on:click={handleCopyURL}>
-			<Copy class="text-muted-foreground" />
+			{#if checkmark}
+				<Check class="text-muted-foreground" />
+			{:else}
+				<Copy class="text-muted-foreground" />
+			{/if}
 		</Button>
 	</CardContent>
 </Card>
