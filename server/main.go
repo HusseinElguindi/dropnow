@@ -1,26 +1,21 @@
 package main
 
 import (
-	"fmt"
+	"bytes"
+	"context"
+	"encoding/binary"
+	"io"
 	"log"
-	"sync/atomic"
+	"time"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/websocket/v2"
+	"github.com/redis/go-redis/v9"
 )
 
-// TODO: remove race conds (locks or chans?)
-// TODO: Try using Redis with TTL
-
-var rooms = make(map[string]*User)
-var limc = make(chan struct{}, 1) // allow only one room operation at a time
-
-// TODO: mutex per room instead of single channel (would allow parallel updates to different rooms)
-type User struct {
-	*websocket.Conn
-	polite atomic.Bool
-	pair   atomic.Pointer[User]
-}
+// Only pairs are supported
+const MAX_ROOM_SUBSCRIBERS int64 = 2
+const ID_KEY_EXPIRE time.Duration = 2 * 24 * time.Hour
 
 // RoomInfo models an update package for a user in a room
 type RoomInfo struct {
@@ -29,6 +24,12 @@ type RoomInfo struct {
 }
 
 func main() {
+	rdb := redis.NewClient(&redis.Options{
+		Addr:     "redis:6379",
+		Password: "", // no password set
+		DB:       0,  // use default DB
+	})
+
 	app := fiber.New()
 
 	// Websocket connection prerequirement middleware
@@ -37,6 +38,14 @@ func main() {
 		if !websocket.IsWebSocketUpgrade(c) {
 			return fiber.ErrUpgradeRequired
 		}
+
+		id := c.Params("id")
+		numbsub := rdb.PubSubNumSub(context.Background(), id)
+		subscribers := numbsub.Val()[id]
+		if subscribers >= MAX_ROOM_SUBSCRIBERS {
+			return fiber.ErrForbidden
+		}
+		c.Locals("subscribers", subscribers)
 
 		return c.Next()
 	})
@@ -48,41 +57,93 @@ func main() {
 		// Get the room ID
 		id := c.Params("id")
 
-		// Connect to room with the given ID
-		user, ok := connectToRoom(id, c)
-		if !ok {
-			return
-		}
-		// Disconnect from room when connection is closed
-		defer disconnectFromRoom(id, c)
+		ctx, cancel := context.WithCancel(context.Background())
+		defer cancel()
 
-		// Send the new user about the room information
-		roomInfo := RoomInfo{Polite: user.polite.Load(), HasPair: user.pair.Load() != nil}
-		if err := user.WriteJSON(roomInfo); err != nil {
+		pubsub := rdb.Subscribe(ctx, id)
+		defer pubsub.Close()
+
+		ch := pubsub.Channel()
+
+		// Number of subscribers, including the new member
+		subscribers := c.Locals("subscribers").(int64) + 1
+
+		count, err := rdb.Incr(ctx, id).Result()
+		if err != nil {
+			rdb.Set(ctx, id, 0, 0)
+		}
+		rdb.Expire(ctx, id, ID_KEY_EXPIRE)
+		myHeader := MessageHeader{ID: count}
+
+		roomInfo := RoomInfo{Polite: subscribers == 2, HasPair: subscribers > 1}
+		if err := c.WriteJSON(roomInfo); err != nil {
+			log.Println("sending initial room info error:", err)
 			return
 		}
+
+		go func() {
+			var (
+				err    error
+				header MessageHeader
+			)
+			for {
+				select {
+				case <-ctx.Done():
+					return
+				case msg := <-ch:
+					// Read byte header
+					// TODO: don't need to convert entire payload to buffer, only the number of bytes that header uses
+					r := bytes.NewBufferString(msg.Payload)
+					if err = header.unpackBinary(r, binary.LittleEndian); err != nil {
+						log.Println("header unpack error:", err)
+						continue
+					}
+
+					// Ignore own messages
+					if header.ID == myHeader.ID {
+						continue
+					}
+
+					// Write message
+					if err = c.WriteMessage(int(header.Mt), r.Bytes()); err != nil {
+						log.Println("write to redis channel error", err)
+						continue
+					}
+				}
+			}
+		}()
 
 		var (
 			mt  int
-			msg []byte
-			err error
+			r   io.Reader
+			buf bytes.Buffer
 		)
 		for {
-			// Read incoming messages
-			if mt, msg, err = c.ReadMessage(); err != nil {
-				log.Println("read error:", err)
+			// Read incoming websocket message
+			if mt, r, err = c.NextReader(); err != nil {
+				log.Println("error getting reader:", err)
 				break
 			}
+			myHeader.Mt = int32(mt)
 
-			pair := user.pair.Load()
-			// If no other user or a reserved user (nil connection) is connected, disregard the message
-			if pair == nil { //|| user.pair.Conn == nil {
+			buf.Reset()
+
+			// Prepend write the byte header
+			if err = myHeader.packBinary(&buf, binary.LittleEndian); err != nil {
+				log.Println("header pack error:", err)
 				continue
 			}
-			// Send the message to the other user
-			if err = pair.WriteMessage(mt, msg); err != nil {
-				log.Println("write error:", err)
-				break
+
+			// Write message content
+			if _, err = io.Copy(&buf, r); err != nil {
+				log.Println("message read error:", err)
+				continue
+			}
+
+			// Send message to pubsub channel
+			if err := rdb.Publish(ctx, id, buf.Bytes()).Err(); err != nil {
+				log.Println("message write error:", err)
+				continue
 			}
 		}
 	}))
@@ -90,61 +151,15 @@ func main() {
 	log.Fatal(app.Listen(":3000"))
 }
 
-// Attempt to connect a new user with the passed websocket connection to a room. A room with the passed ID is
-// created if does not already exist. Returns false if the room is full, otherwise, a reference to the created
-// user and true is returned.
-func connectToRoom(id string, c *websocket.Conn) (*User, bool) {
-	limc <- struct{}{}
-	defer func() {
-		<-limc
-	}()
-
-	user, ok := rooms[id]
-	var newUser *User
-	if !ok || user == nil {
-		// Room does not exist or exists and is empty
-		newUser = &User{c, atomic.Bool{}, atomic.Pointer[User]{}}
-		newUser.polite.Store(true)
-		newUser.pair.Store(nil)
-		rooms[id] = newUser
-	} else if user.pair.Load() == nil {
-		// A user is waiting alone in the room
-		// If pair is polite then be impolite, and vice versa
-		newUser = &User{c, atomic.Bool{}, atomic.Pointer[User]{}}
-		newUser.polite.Store(!user.polite.Load())
-		newUser.pair.Store(user)
-		user.pair.Store(newUser)
-	} else {
-		// Room is full
-		return nil, false
-	}
-	return newUser, true
+type MessageHeader struct {
+	ID int64 // sender id
+	Mt int32
 }
 
-func disconnectFromRoom(id string, c *websocket.Conn) {
-	limc <- struct{}{}
-	defer func() {
-		<-limc
-	}()
+func (m MessageHeader) packBinary(w io.Writer, order binary.ByteOrder) error {
+	return binary.Write(w, order, m)
+}
 
-	user, ok := rooms[id]
-	if !ok || user == nil {
-		return
-	}
-
-	pair := user.pair.Load()
-
-	if user.Conn == c {
-		if pair != nil {
-			pair.pair.Store(nil)
-		}
-
-		user.pair.Store(nil)
-		rooms[id] = pair
-	} else if pair != nil && pair.Conn == c {
-		pair.pair.Store(nil)
-		user.pair.Store(nil)
-	} else {
-		fmt.Println("what (disconnect)?")
-	}
+func (m *MessageHeader) unpackBinary(r io.Reader, order binary.ByteOrder) error {
+	return binary.Read(r, order, m)
 }

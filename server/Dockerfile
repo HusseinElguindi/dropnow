@@ -20,7 +20,7 @@
 
 
 # Base build image for Go
-FROM golang:1.20rc1-alpine AS go_build_base
+FROM golang:1.20-alpine AS go_build_base
 
 # Install git for any tools that require it
 RUN apk add --no-cache git
