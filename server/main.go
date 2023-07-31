@@ -17,6 +17,14 @@ import (
 const MAX_ROOM_SUBSCRIBERS int64 = 2
 const ID_KEY_EXPIRE time.Duration = 2 * 24 * time.Hour
 
+var HEADER_BYTE_ORDER = binary.LittleEndian
+
+// MessageHeader models a fixed-size header for Redis pubsub messages
+type MessageHeader struct {
+	ID int64 // sender id
+	Mt int32 // ws message type
+}
+
 // RoomInfo models an update package for a user in a room
 type RoomInfo struct {
 	Polite  bool `json:"polite"`   // is the user polite?
@@ -81,20 +89,26 @@ func main() {
 			return
 		}
 
+		// Redis -> Websocket
 		go func() {
 			var (
 				err    error
 				header MessageHeader
+				buf    bytes.Buffer
 			)
 			for {
 				select {
 				case <-ctx.Done():
 					return
 				case msg := <-ch:
+					buf.Reset()
+					if _, err := buf.WriteString(msg.Payload); err != nil {
+						log.Println("payload read to buffer error:", err)
+						continue
+					}
+
 					// Read byte header
-					// TODO: don't need to convert entire payload to buffer, only the number of bytes that header uses
-					r := bytes.NewBufferString(msg.Payload)
-					if err = header.unpackBinary(r, binary.LittleEndian); err != nil {
+					if err = binary.Read(&buf, HEADER_BYTE_ORDER, &header); err != nil {
 						log.Println("header unpack error:", err)
 						continue
 					}
@@ -105,14 +119,15 @@ func main() {
 					}
 
 					// Write message
-					if err = c.WriteMessage(int(header.Mt), r.Bytes()); err != nil {
-						log.Println("write to redis channel error", err)
+					if err = c.WriteMessage(int(header.Mt), buf.Bytes()); err != nil {
+						log.Println("write to redis channel error:", err)
 						continue
 					}
 				}
 			}
 		}()
 
+		// Websocket -> Redis
 		var (
 			mt  int
 			r   io.Reader
@@ -129,7 +144,7 @@ func main() {
 			buf.Reset()
 
 			// Prepend write the byte header
-			if err = myHeader.packBinary(&buf, binary.LittleEndian); err != nil {
+			if err = binary.Write(&buf, HEADER_BYTE_ORDER, myHeader); err != nil {
 				log.Println("header pack error:", err)
 				continue
 			}
@@ -149,17 +164,4 @@ func main() {
 	}))
 
 	log.Fatal(app.Listen(":3000"))
-}
-
-type MessageHeader struct {
-	ID int64 // sender id
-	Mt int32
-}
-
-func (m MessageHeader) packBinary(w io.Writer, order binary.ByteOrder) error {
-	return binary.Write(w, order, m)
-}
-
-func (m *MessageHeader) unpackBinary(r io.Reader, order binary.ByteOrder) error {
-	return binary.Read(r, order, m)
 }
